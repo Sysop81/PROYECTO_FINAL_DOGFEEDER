@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">DogFeeder</string>
+
+    <!-- Login view -->
+    <string name="lbl_login">Iniciar sesión</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="forgot">Olvidó su contraseña</string>
+    <string name="submit">Loguearse</string>
+
+
+    <!-- Fragment FOOD -->
+    <string name="txt_food">Alimentar mascota</string>
+    <string name="btn_food">Comenzar</string>
+
+    <!-- Menus -->
+    <string name="closeSession">Cerrar sesión</string>
+    <string name="title_more">mas</string>
+    <string name="menu_baseline_home">Home</string>
+    <string name="menu_baseline_list">Actividades</string>
+    <string name="menu_baseline_fav">Favoritos</string>
+    <string name="menu_baseline_loc">Localizacion</string>
+    <string name="navigation_drawer_open">Abierto</string>
+    <string name="navigation_drawer_close">Cerrado</string>
+</resources>
