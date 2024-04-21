@@ -13,19 +13,14 @@ public class ServerThread extends Thread{
     private UserDAO userDAO;
     private ServoMotor servomotor;
     private Socket client;
-
     private static int index = 0;
-    /*private static final String PASSWORD = "1234"; // TODO DELETE WHEN RUN DB
-    final static String MENU = "1. Ver\n2. Listar\n3. Exit";
-    final static String SUB_MENU_LISTAR = "1. Visualizar solo ficheros\n2. Visualizar directorios y ficheros";
-    final static String CHARACTERS_RES_CLIENT = "#99"; */
     private int sStatus;
 
     public ServerThread(Socket client,Conexion con){
-        super("Cliente" + (index++));
+        super("Cliente-" + (index++));
         this.client = client;
         this.sStatus = 0;
-        this.servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),3000);
+        this.servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),2000);
         this.userDAO = new UserDAO(con);
     }
 
@@ -36,7 +31,7 @@ public class ServerThread extends Thread{
         try {
             // Step 1. Comprobación password
             while (sStatus == 0) {
-                //sendMsgToClient("Introduce clave de acceso" + CHARACTERS_RES_CLIENT);
+
                 var request = readMsgFromClient();
 
                 this.loggedUser = getActualUser(request);
@@ -46,7 +41,6 @@ public class ServerThread extends Thread{
                 if (targetUser != null && this.loggedUser.getPassword().equals(targetUser.getPassword())){
                     setName(this.loggedUser.getEmail());
                     sStatus = 10; // Logueado con estado ocioso en la maquina de estados
-                    //System.out.println(getName() + " logueado correctamente.");
                     response = "1"; // Se cambia la respuesta a devolver al cliente
                 }
 
@@ -62,28 +56,44 @@ public class ServerThread extends Thread{
                 sStatus = setServerStatus(readMsgFromClient());
 
                 switch(sStatus){
+                    case -1:
+                        System.out.println(getName() + " finaliza la sesión en servidor TCP- DOGFEEDR");
+                        sendMsgToClient("1");
+                        break;
                     case 1:
                         // Suministrar comida
-                        System.out.println("Suministrando comida al comedero");
-                        var res = this.servomotor.supplyFood();
-                        sendMsgToClient(res ? "1" : "0");
+                        var responseCode = "3";
+
+                        if (!servomotor.isBussy()) {
+                            System.out.println("Suministrando comida al comedero");
+                            var res = this.servomotor.supplyFood();
+                            responseCode = res ? "1" : "0";
+                        }else{
+
+                            System.err.println("Espere!!! El servomotor para el suministro de alimentos está en uso");
+                        }
+                        sendMsgToClient(responseCode);
                         sStatus = 10;
                         break;
                     case 2:
                         // Registrar usuario
                         break;
+                    case 3:
+                        // recuperar password
+                        break;
                 }
             }
 
-            // Step 3. Finalizando con el cliente
-            System.out.println(getName() + " finaliza la sesión en servidor TCP- DOGFEEDR");
-            sendMsgToClient("1");
-            this.sStatus = 0;
-            this.client.close();
-            this.userDAO.close();
-
         }catch (Exception e) {
             System.out.println("Cliente " + getName() + " cierra el programa cliente");
+        }finally {
+            try {
+                this.sStatus = 0;
+                this.client.close();
+                //this.userDAO.close();
+            } catch (IOException e) {
+                System.err.println("Error al cerrar la conexión cliente. " + e.getMessage());
+            }
         }
     }
 
@@ -106,7 +116,6 @@ public class ServerThread extends Thread{
     }
 
     private void sendMsgToClient(String msg) throws IOException {
-
         // Step 1. Se instancia el objeto OutputStream y DataOutputStream para el envío del flujo de bytes al cliente
         OutputStream stream = client.getOutputStream();
         DataOutputStream streamOut = new DataOutputStream(stream);

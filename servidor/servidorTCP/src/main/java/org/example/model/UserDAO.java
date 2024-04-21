@@ -65,13 +65,12 @@ public class UserDAO {
      * Metodo para cerrar la conexion con la BBDD
      * @return true o false.
      */
-    public void close(){
+    /*public void close(){
         try {
             this.con.cerrarConexion();
         } catch (SQLException e) {
             System.out.println("Error al cerrar la conexión UsuarioDAO " + e.getMessage());
         }
-    }
-
+    }*/
 
 }

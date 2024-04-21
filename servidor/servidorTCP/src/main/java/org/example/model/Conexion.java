@@ -6,11 +6,10 @@ import java.sql.SQLException;
 
 public class Conexion {
 
-    private static final String URL = "jdbc:mysql://localhost/dog_feeder"; //"jdbc:mysql://192.168.18.240:3306/dog_feeder";   //"jdbc:mysql://localhost:3306/dog_feeder";
-
+    private static final String URL = "jdbc:mysql://localhost/" + System.getenv("DB_NAME");
     private String user;
     private String password;
-    private Connection con;
+    //private Connection con;
 
     public Conexion(String user, String password){
         this.user = user;
@@ -23,7 +22,6 @@ public class Conexion {
      * @return
      */
     public Connection getConexion() throws SQLException {
-        //return con;
         return DriverManager.getConnection(URL,user,password);
     }
 
@@ -32,16 +30,16 @@ public class Conexion {
      * Se encarga de establecer una conexion con la base de datos e instanciar la propiedad con
      * @throws SQLException
      */
-    public void establecerConexion() throws SQLException {
+    /*public void establecerConexion() throws SQLException {
         this.con = DriverManager.getConnection(URL,user,password);
-    }
+    }*/
 
     /**
      * Método cerrarConexion
      * Se encarga de finalizar la conexion activa con la base de datos
      * @throws SQLException
      */
-    public void cerrarConexion() throws SQLException {
+    /*public void cerrarConexion() throws SQLException {
         this.con.close();
-    }
+    }*/
 }

@@ -23,6 +23,7 @@ import java.io.OutputStream
 class FragmentFood(val _context: Activity) : Fragment() {
 
     private val session = Session.getInstance()
+    private lateinit var btnSetFood: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,18 +36,18 @@ class FragmentFood(val _context: Activity) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnSetFood = view.findViewById<Button>(R.id.btnSetFood)
+        btnSetFood = view.findViewById<Button>(R.id.btnSetFood)
         btnSetFood.setOnClickListener{
             handleBtnSetFood()
         }
     }
 
     private fun handleBtnSetFood(){
-        //Tools.showAlertDialog(_context,"Alimentamos mascota")
+        btnSetFood.isEnabled = false
         val handler = Handler(Looper.getMainLooper())
         val that = this
         GlobalScope.launch(Dispatchers.IO) {
-            val stream: OutputStream =  that.session.clientSocket.getOutputStream() //that.clientSocket.getOutputStream()
+            val stream: OutputStream =  that.session.clientSocket.getOutputStream()
             val streamOut = DataOutputStream(stream)
             streamOut.writeUTF("FOOD")
 
@@ -55,11 +56,14 @@ class FragmentFood(val _context: Activity) : Fragment() {
             val statusCode = data.readUTF();
 
             handler.post{
-                if(statusCode.equals("1")){
-                    Tools.showAlertDialog(_context,"comida suministrada " + statusCode)
-                }else{
-                    Tools.showAlertDialog(_context,"comida no suministrada " + statusCode)
+
+                val msg = when(statusCode){
+                    "1" -> "Comida suministrada"
+                    "2" -> "Comida no suministrada"
+                    else -> "Espere!!! El servomotor para el suministro de alimentos está en uso"
                 }
+                Tools.showAlertDialog(_context,msg)
+                btnSetFood.isEnabled = true
             }
         }
     }

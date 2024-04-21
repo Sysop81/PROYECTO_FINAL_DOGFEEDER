@@ -51,9 +51,10 @@ class FragmentLogin : Fragment(){
         sharedPreferences = view.context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
         GlobalScope.launch(Dispatchers.IO) {
-            // establecemos el socket con el servidor TCP
-            //val serverIp = "10.0.2.2" // localhost
-            val serverIp = "192.168.18.240" //"10.0.2.2" //"192.168.1.240";
+            // establecemos el socket con el servidor TCP //  TODO -> Set in sharedPreferences - or set a fun to search search a server IP
+            //val serverIp = "10.0.2.2"        // localhost
+            // val serverIp = "192.168.18.240" // Local 1
+            val serverIp = "192.168.1.240"     // Local 2
             val serverPort = 2000
             session.clientSocket = Socket(serverIp, serverPort)
 
@@ -67,13 +68,11 @@ class FragmentLogin : Fragment(){
             }
         }
 
-
         val btnLogin = view.findViewById<Button>(R.id.btnLogin);
         val btnRegister = view.findViewById<Button>(R.id.btnRegister);
         btnLogin.setOnClickListener{ handleLogin() }
         btnRegister.setOnClickListener{ handleRegister() }
     }
-
 
 
     fun handleLogin() {
