@@ -9,8 +9,19 @@
     <string name="forgot">Olvidó su contraseña</string>
     <string name="submit">Loguearse</string>
 
+    <!-- Register view & recovery pass -->
+    <string name="txt_title">Registrar usuario</string>
+    <string name="txt_email">Correo electrónico</string>
+    <string name="txt_password">Contraseña</string>
+    <string name="txt_password2">Confirmar contraseña</string>
+    <string name="placeholder_email">micorreo@example.com</string>
+    <string name="btn_recovery">Solicitar cambio de contraseña</string>
+    <string name="txt_cod_recovery">Código de verificación</string>
+    <string name="placeholder_verify_code">Introduzca código obtenido vía mail</string>
+    <string name="btn_verify_code">Verificar código de seguridad</string>
+    <string name="btn_change_password">Cambiar contraseña</string>
 
-    <!-- Fragment FOOD -->
+    <!-- FOOD Fragment view -->
     <string name="txt_food">Alimentar mascota</string>
     <string name="btn_food">Comenzar</string>
 

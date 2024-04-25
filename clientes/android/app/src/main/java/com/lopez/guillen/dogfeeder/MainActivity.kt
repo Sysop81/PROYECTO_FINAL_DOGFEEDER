@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             R.id.opCloseSession->{
                 // ***** Cerramos sesion
                 // Step 1 Limpiamos el usuario de las sharedPreferences
-                Tools.cheanSharedPreferences(sharedPreferences)
+                Tools.cleanSharedPreferences(sharedPreferences)
 
                 /*val user = FirebaseAuth.getInstance().currentUser
                 if(user != null) FirebaseAuth.getInstance().signOut()*/
@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                     handler.post{
                         if(statusCode != null && statusCode.equals("1")){
                             session.close()
-                            Tools.cheanSharedPreferences(sharedPreferences)
+                            Tools.cleanSharedPreferences(sharedPreferences)
                             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                         }else{
                             Tools.showAlertDialog(this@MainActivity,"Error al cerrar sesión")

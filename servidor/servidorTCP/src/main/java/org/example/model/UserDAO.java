@@ -61,6 +61,27 @@ public class UserDAO {
         return user;
     }
 
+
+    public int setNewPassword(String email, String password){
+        System.out.println("llega: " + email + " - " + password);
+        String query = "UPDATE user SET password = ? WHERE email = ?";
+        int retorno = 0;
+        try {
+            PreparedStatement ps = con.getConexion().prepareStatement(query);
+
+            ps.setString(1,password);
+            ps.setString(2, email);
+            retorno = ps.executeUpdate();
+
+            ps.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el password de usuario " + e.getMessage());
+        }
+
+        return retorno;
+    }
+
     /**
      * Metodo para cerrar la conexion con la BBDD
      * @return true o false.

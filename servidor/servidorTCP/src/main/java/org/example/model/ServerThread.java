@@ -1,7 +1,9 @@
 package org.example.model;
 
 import com.pi4j.io.gpio.RaspiPin;
+import org.example.Utils.Tools;
 import org.example.crypto.Hasher;
+import org.example.mail.Email;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -15,6 +17,7 @@ public class ServerThread extends Thread{
     private Socket client;
     private static int index = 0;
     private int sStatus;
+    private String responseCode;
 
     public ServerThread(Socket client,Conexion con){
         super("Cliente-" + (index++));
@@ -22,6 +25,7 @@ public class ServerThread extends Thread{
         this.sStatus = 0;
         this.servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),2000);
         this.userDAO = new UserDAO(con);
+        this.responseCode = "0";
     }
 
 
@@ -29,57 +33,36 @@ public class ServerThread extends Thread{
     public void run() {
 
         try {
-            // Step 1. Comprobación password
-            while (sStatus == 0) {
 
-                var request = readMsgFromClient();
-
-                this.loggedUser = getActualUser(request);
-                var targetUser = userDAO.getUserbyEmail(this.loggedUser.getEmail());
-                var response = "0"; // Se devuelve por defecto falso o no logueado
-
-                if (targetUser != null && this.loggedUser.getPassword().equals(targetUser.getPassword())){
-                    setName(this.loggedUser.getEmail());
-                    sStatus = 10; // Logueado con estado ocioso en la maquina de estados
-                    response = "1"; // Se cambia la respuesta a devolver al cliente
-                }
-
-                System.out.println( sStatus == 10 ?  getName() + " logueado correctamente." : "LOGIN incorrecto");
-                sendMsgToClient(response); // Se envia estado correcto al cliente
-
-            }
-
-
-            // Step 2. Maquina Estados. Rotativo hasta que el estado sea -1
+            // Step 1. Maquina Estados. Rotativo hasta que el estado sea -1
             while(sStatus != -1){
 
                 sStatus = setServerStatus(readMsgFromClient());
 
                 switch(sStatus){
                     case -1:
-                        System.out.println(getName() + " finaliza la sesión en servidor TCP- DOGFEEDR");
-                        sendMsgToClient("1");
+                        // Exit
+                        exit();
+
+                        break;
+                    case 0:
+                        // Login
+                        login();
+
                         break;
                     case 1:
-                        // Suministrar comida
-                        var responseCode = "3";
+                        // Register user
+                        register();
 
-                        if (!servomotor.isBussy()) {
-                            System.out.println("Suministrando comida al comedero");
-                            var res = this.servomotor.supplyFood();
-                            responseCode = res ? "1" : "0";
-                        }else{
-
-                            System.err.println("Espere!!! El servomotor para el suministro de alimentos está en uso");
-                        }
-                        sendMsgToClient(responseCode);
-                        sStatus = 10;
                         break;
                     case 2:
-                        // Registrar usuario
+                        // Recovery pass
+                        recoveryPass();
+
                         break;
                     case 3:
-                        // recuperar password
+                        // Supply food
+                        supplyFood();
                         break;
                 }
             }
@@ -104,15 +87,95 @@ public class ServerThread extends Thread{
 
     private int setServerStatus(String request){
         switch (request.toUpperCase()){
-            case "FOOD":
-                return 1;
-            case "REGISTER":
-                return 2;
             case "CLOSE":
                 return -1;
+            case "LOGIN":
+                return 0;
+            case "REGISTER":
+                return 1;
+            case "RECOVERYPASS":
+                return 2;
+            case "FOOD":
+                return 3;
+
         }
 
         return 10;
+    }
+
+    private void login() throws IOException {
+
+        var request = readMsgFromClient();
+
+        this.loggedUser = getActualUser(request);
+        var targetUser = userDAO.getUserbyEmail(this.loggedUser.getEmail());
+        var response = "0"; // Se devuelve por defecto falso o no logueado
+
+        if (targetUser != null && this.loggedUser.getPassword().equals(targetUser.getPassword())){
+            setName(this.loggedUser.getEmail());
+            sStatus = 10; // Logueado con estado ocioso en la maquina de estados
+            response = "1"; // Se cambia la respuesta a devolver al cliente
+        }
+
+        System.out.println( sStatus == 10 ?  getName() + " logueado correctamente." : "LOGIN incorrecto");
+        sendMsgToClient(response); // Se envia estado correcto al cliente
+
+    }
+
+    private void exit() throws IOException {
+        System.out.println(getName() + " finaliza la sesión en servidor TCP- DOGFEEDER");
+        responseCode = "1";
+        sendMsgToClient(responseCode);
+    }
+
+    private void register() throws IOException {
+        var newUser = getActualUser(readMsgFromClient());
+        responseCode = String.valueOf(userDAO.postUser(newUser));
+        var msg =  newUser.getEmail() + (responseCode.equals("1") ? " registrado correctamente" : " no se ha registrado en la BD");
+        System.out.println(msg);
+        sendMsgToClient(responseCode);
+        sStatus = 0; // Usuario Registrado pero No logueado
+    }
+
+    private void recoveryPass() throws IOException {
+        // Step 1. Enviar código de verificación
+        var targetEmail = readMsgFromClient();
+        var validCode = Tools.getRandonCode();
+        Email email = new Email();
+        boolean isSend = email.sendMailTo(targetEmail,
+                                "DOG-FEEDER Solicitud de cambio de contraseña",
+                                  "Código de verificación: " + validCode);
+        System.out.println("Código enviado por mail: " + validCode);
+        responseCode = isSend ? "1" : "0";
+        sendMsgToClient(responseCode);
+
+        // Step 2. Recepción del código enviado vái mail al cliente que solicita el cambio
+        var clientCode = readMsgFromClient();
+        System.out.println("Cliente envia: " + clientCode);
+        responseCode = String.valueOf(validCode).equals(clientCode) ? "1" : "0";
+        sendMsgToClient(responseCode);
+
+        // Step 3. Cambio de password
+        var newPassword = readMsgFromClient();
+        responseCode = String.valueOf(userDAO.setNewPassword(targetEmail,Hasher.encode(newPassword)));
+        sendMsgToClient(responseCode);
+
+        System.out.println("Cambio de password realizado con éxito");
+    }
+
+    private void supplyFood() throws IOException {
+        responseCode = "3";
+
+        if (!servomotor.isBussy()) {
+            System.out.println("Suministrando comida al comedero");
+            var res = this.servomotor.supplyFood();
+            responseCode = res ? "1" : "0";
+        }else{
+
+            System.err.println("Espere!!! El servomotor para el suministro de alimentos está en uso");
+        }
+        sendMsgToClient(responseCode);
+        sStatus = 10;
     }
 
     private void sendMsgToClient(String msg) throws IOException {

@@ -1,6 +1,7 @@
 package com.lopez.guillen.dogfeeder
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -40,7 +41,15 @@ class LoginActivity : AppCompatActivity(), FragmentInteractionListener {
     }
 
     override fun onHandleRecoveryPassword() {
-        TODO("Not yet implemented")
+        // Step 1. Instanciamos el objeto encargado de interactuar con los fragments
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        // Step 2. Se realiza el reemplazo del fragment por el deseado y se crea una nueva instancia FragmentRecoveryPassword asociado
+        //         al contexto de este activity.
+        fragmentTransaction.replace(R.id.frameLayoutLogin, FragmentRecoveryPassword())
+        // Step 3. Se maneja la pila de retroceso permitiendo volver al usuario al fragment anterior que siempre será loginFragment
+        fragmentTransaction.addToBackStack(null)
+        // Step 4. Se confirma la transacción y se aplican los cambios
+        fragmentTransaction.commit()
     }
 
 

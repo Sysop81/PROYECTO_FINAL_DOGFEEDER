@@ -53,7 +53,7 @@ class FragmentLogin : Fragment(){
         GlobalScope.launch(Dispatchers.IO) {
             // establecemos el socket con el servidor TCP //  TODO -> Set in sharedPreferences - or set a fun to search search a server IP
             //val serverIp = "10.0.2.2"        // localhost
-            // val serverIp = "192.168.18.240" // Local 1
+            //val serverIp = "192.168.18.240" // Local 1
             val serverIp = "192.168.1.240"     // Local 2
             val serverPort = 2000
             session.clientSocket = Socket(serverIp, serverPort)
@@ -68,10 +68,12 @@ class FragmentLogin : Fragment(){
             }
         }
 
-        val btnLogin = view.findViewById<Button>(R.id.btnLogin);
-        val btnRegister = view.findViewById<Button>(R.id.btnRegister);
+        val btnLogin = view.findViewById<Button>(R.id.btnLogin)
+        val btnRegister = view.findViewById<Button>(R.id.btnRegister)
+        val btnRecovery = view.findViewById<Button>(R.id.btnRecoveryPassword)
         btnLogin.setOnClickListener{ handleLogin() }
         btnRegister.setOnClickListener{ handleRegister() }
+        btnRecovery.setOnClickListener{handleBtnRecoveryPass()}
     }
 
 
@@ -112,6 +114,7 @@ class FragmentLogin : Fragment(){
         GlobalScope.launch(Dispatchers.IO) {
             val stream: OutputStream =  that.session.clientSocket.getOutputStream()
             val streamOut = DataOutputStream(stream)
+            streamOut.writeUTF("LOGIN")
             streamOut.writeUTF(email +"_"+pass)
 
             val inStream: InputStream = that.session.clientSocket.getInputStream() 
@@ -177,17 +180,17 @@ class FragmentLogin : Fragment(){
      * cambio de contraseña.
      */
     fun handleBtnRecoveryPass(){
-        /*// Step 1. se declara la variable listener encargada de acceder al metodo implementado en el LoginActivity al
+        // Step 1. se declara la variable listener encargada de acceder al metodo implementado en el LoginActivity al
         //         implmentar la interfaz FragmentInteractionListener
         var listener: FragmentInteractionListener? = null
         // Step 2. Preguntamos si nuestra activity es del tipo (Interface) FragmentInteractionListener
-        if (contexto is FragmentInteractionListener) {
+        if (_context is FragmentInteractionListener) {
             // De esta forma casteamos el Activity a FragmentInteractionListener
-            listener = contexto as FragmentInteractionListener
+            listener = _context as FragmentInteractionListener
             // Finalmente podemos acceder al metodo implmentado en el activity para realizar el cambio de fragment en
             // nuestro contenedor framelayout situado en la vista del activity login.
             listener.onHandleRecoveryPassword()
-        }*/
+        }
     }
 
 

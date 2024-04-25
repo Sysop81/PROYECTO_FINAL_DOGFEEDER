@@ -2,6 +2,7 @@ package com.lopez.guillen.dogfeeder.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Patterns
 import androidx.appcompat.app.AlertDialog
 import com.lopez.guillen.dogfeeder.model.User
 import org.json.JSONObject
@@ -26,6 +27,17 @@ class Tools {
             //         show.
             val aDialog = alert.create()
             aDialog.show()
+        }
+
+        /**
+         * Método isValidEmail
+         * Este método se encarga de validar el valor recogido del formulario mediante una expresión regular establecida en
+         * el patron. Mediante el método matcher del patron construido se evalua la cadena introducida por el usuario. Se retornará
+         * verdadero si es correcta en base al patron o falso en caso de que no sea válida.
+         */
+        fun isValidEmail(email: String): Boolean {
+            val pattern = Patterns.EMAIL_ADDRESS
+            return pattern.matcher(email).matches()
         }
 
         /**
@@ -61,7 +73,7 @@ class Tools {
          * Método cheanSharedPreferences
          * Se encarga de borrar el contenido de las sharedPreferences. Utilizado cuando el usuario cierra sesion.
          */
-        fun cheanSharedPreferences(sharedPrefences: SharedPreferences) {
+        fun cleanSharedPreferences(sharedPrefences: SharedPreferences) {
             val editor = sharedPrefences.edit()
             editor.clear()
             editor.apply()
