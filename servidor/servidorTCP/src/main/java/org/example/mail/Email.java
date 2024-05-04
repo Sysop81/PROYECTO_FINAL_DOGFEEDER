@@ -1,5 +1,7 @@
 package org.example.mail;
 
+import org.example.crypto.Hasher;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -19,7 +21,7 @@ public class Email {
         userAccount = System.getenv("MAIL_USER_ACCOUNT");
         password = System.getenv("MAIL_USER_PASSWORD");
 
-        System.out.println(userAccount + " " +  password);
+        System.out.println("Cuenta configurada para DOGFEEDER: " + userAccount);
 
         // Step 2. Instanciamos la propiedad sesión mediante el objeto properties y realizando el login con el usuario
         //         y password obtenido de nuestro fichero properties.

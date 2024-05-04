@@ -1,6 +1,7 @@
 package org.example.model;
 
 public class User {
+    private int ID;
     private String email;
     private String password;
 
@@ -9,6 +10,14 @@ public class User {
     public User(String email, String password){
         this.email = email;
         this.password = password;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getEmail() {
@@ -30,7 +39,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "ID=" + ID +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

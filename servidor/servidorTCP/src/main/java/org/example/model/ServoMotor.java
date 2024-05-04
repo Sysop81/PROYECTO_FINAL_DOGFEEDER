@@ -4,13 +4,10 @@ import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
 
-import java.sql.SQLOutput;
-
 public class ServoMotor {
 
     private int pin;
     private int time;
-
     private final int DEFAULT_TIME = 1000;
     private final int INITIAL_POS = 0;
     private final int FINAL_POS = 100;
@@ -56,7 +53,7 @@ public class ServoMotor {
             SoftPwm.softPwmWrite(this.pin, 1);
             Thread.sleep(1000); // Esperar 1 segundo
 
-            // Detener la generación de pulsos PWM suave en el pin PWM
+            // Detener la generación de pulsos en el pin PWM
             SoftPwm.softPwmStop(this.pin);
 
             isOk = true;
@@ -69,7 +66,69 @@ public class ServoMotor {
         return isOk;
     }
 
+
+    public boolean supplyFlashesFood(){
+        if(isInUse) return false;
+        boolean isOk = false;
+        try {
+            isInUse = true;
+            SoftPwm.softPwmCreate(this.pin,INITIAL_POS,FINAL_POS);
+
+            SoftPwm.softPwmWrite(this.pin, 9);
+            Thread.sleep(600);
+
+            int flashes = 4;
+            while(flashes > 1){
+
+                SoftPwm.softPwmWrite(this.pin, 5);
+                Thread.sleep(100);
+                SoftPwm.softPwmWrite(this.pin, 1);
+                Thread.sleep(100);
+                flashes--;
+            }
+
+            // Detener la generación de pulsos en el pin PWM
+            SoftPwm.softPwmStop(this.pin);
+
+            isOk = true;
+        }catch (InterruptedException e){
+            System.err.println("Ocurrió un error durante el suministro de tipo flash de comida.\n" + e.getMessage());
+        }finally {
+            isInUse = false;
+        }
+
+        return isOk;
+    }
+
     public boolean isBussy(){
         return isInUse;
+    }
+
+
+    public void open(){
+        SoftPwm.softPwmCreate(this.pin,INITIAL_POS,FINAL_POS);
+        for(int i = 1; i < 16; i++){
+            SoftPwm.softPwmWrite(this.pin, i);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        SoftPwm.softPwmStop(this.pin);
+    }
+
+    public void close(){
+        SoftPwm.softPwmCreate(this.pin,INITIAL_POS,FINAL_POS);
+        for(int i = 16; i >= 1; i-=2){
+            SoftPwm.softPwmWrite(this.pin, i);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        SoftPwm.softPwmStop(this.pin);
     }
 }

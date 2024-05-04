@@ -43,6 +43,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 user = new User();
+                user.setID(rs.getInt(1));
                 System.out.println("ID: " + rs.getInt(1));
                 user.setEmail(rs.getString(2));
                 System.out.println("email: " + rs.getString(2));
@@ -63,7 +64,6 @@ public class UserDAO {
 
 
     public int setNewPassword(String email, String password){
-        System.out.println("llega: " + email + " - " + password);
         String query = "UPDATE user SET password = ? WHERE email = ?";
         int retorno = 0;
         try {

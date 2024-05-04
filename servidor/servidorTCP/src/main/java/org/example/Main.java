@@ -4,19 +4,21 @@ import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import org.example.model.Button;
-import org.example.model.Conexion;
-import org.example.model.ServerThread;
-import org.example.model.ServoMotor;
+import org.example.model.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
+
 
 public class Main {
 
     private static Conexion con;
     private static final int PORT = 2000;
     private static GpioPinDigitalInput button_food;
+    private static GpioPinDigitalInput button_food_tray;
+    private static boolean isTrayOpen = false;
+    private static User defaultUser;
+    private static SupplyFoodAuditDAO sfaDAO;
+
 
     public static void main(String[] args) {
         initialize();
@@ -28,22 +30,44 @@ public class Main {
         // TODO: DELETE WHEN REPAIR A INITIAL MOVE PROBLEM ON POWER ON
         new ServoMotor(RaspiPin.GPIO_01.getAddress()).resetServoPosition();
 
+
         con = new Conexion(System.getenv("DB_USER"),System.getenv("DB_PASSWORD"));
-        try {
-            var c = con.getConexion();
-            System.out.println(c.getMetaData());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        var userDAO = new UserDAO(con);
+        sfaDAO = new SupplyFoodAuditDAO(con);
+        defaultUser = userDAO.getUserbyEmail(System.getenv("DEFAULT_USER"));
+
         button_food = Button.getButton(RaspiPin.GPIO_00);
         button_food.addListener((GpioPinListenerDigital) event -> {
             if (event.getState() == PinState.HIGH) {
                 System.out.println("Suministrando comida al comedero");
                 var servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),2000);
                 if (!servomotor.isBussy()){
-                    System.out.println(servomotor.supplyFood() ? "Comida suministrada" : "Comida no suministrada");
+                    var msg = "Comida no suministrada";
+                    if(servomotor.supplyFood()){
+                        msg = "Comida suministrada";
+                        sfaDAO.postSupplyFood(new SupplyFoodAudit(defaultUser,250)); // TODO -> remove hardcored value
+                    }
+                    System.out.println(msg);
                 }else{
                     System.err.println("Espere!!! El servomotor para el suministro de alimentos está en uso");
+                }
+            }
+        });
+
+        button_food_tray = Button.getButton(RaspiPin.GPIO_02);
+        button_food_tray.addListener((GpioPinListenerDigital) event -> {
+            if (event.getState() == PinState.HIGH) {
+                var servoMotor = new ServoMotor(RaspiPin.GPIO_26.getAddress());
+                if(isTrayOpen){
+                    System.out.println("Cerrando la bandeja de suministro de pienso");
+                    // Si esta abierta
+                    servoMotor.close();
+                    isTrayOpen = false;
+                }else{
+                    System.out.println("Abriendo la bandeja de suministro de pienso");
+                    // Si esta cerrada
+                    servoMotor.open();
+                    isTrayOpen = true;
                 }
             }
         });

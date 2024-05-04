@@ -13,6 +13,8 @@ public class ServerThread extends Thread{
 
     private User loggedUser;
     private UserDAO userDAO;
+    private SupplyFoodAuditDAO sfaDAO;
+    private PetDAO petDAO;
     private ServoMotor servomotor;
     private Socket client;
     private static int index = 0;
@@ -23,8 +25,10 @@ public class ServerThread extends Thread{
         super("Cliente-" + (index++));
         this.client = client;
         this.sStatus = 0;
-        this.servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),2000);
+        this.servomotor = new ServoMotor(RaspiPin.GPIO_01.getAddress(),400);
         this.userDAO = new UserDAO(con);
+        this.sfaDAO = new SupplyFoodAuditDAO(con);
+        this.petDAO = new PetDAO(con);
         this.responseCode = "0";
     }
 
@@ -64,6 +68,22 @@ public class ServerThread extends Thread{
                         // Supply food
                         supplyFood();
                         break;
+                    case 4:
+                        // GET food audits
+                        getSupplyFoodAudits();
+                        break;
+                    case 5:
+                        // Get last food audit
+                        getLastSupplyFoodAudit();
+                        break;
+                    case 6:
+                        // Get Pet data
+                        getPetData();
+                        break;
+                    case 7:
+                        // POST && PUT Pet data
+                        updatePetData();
+                        break;
                 }
             }
 
@@ -97,6 +117,14 @@ public class ServerThread extends Thread{
                 return 2;
             case "FOOD":
                 return 3;
+            case "AUDITS":
+                return 4;
+            case "LASTAUDIT":
+                return 5;
+            case "PETDATA":
+                return 6;
+            case "POSTPET":
+                return 7;
 
         }
 
@@ -113,6 +141,7 @@ public class ServerThread extends Thread{
 
         if (targetUser != null && this.loggedUser.getPassword().equals(targetUser.getPassword())){
             setName(this.loggedUser.getEmail());
+            this.loggedUser.setID(targetUser.getID());
             sStatus = 10; // Logueado con estado ocioso en la maquina de estados
             response = "1"; // Se cambia la respuesta a devolver al cliente
         }
@@ -135,6 +164,17 @@ public class ServerThread extends Thread{
         System.out.println(msg);
         sendMsgToClient(responseCode);
         sStatus = 0; // Usuario Registrado pero No logueado
+    }
+
+    private void updatePetData() throws IOException {
+        System.out.println("Actualizando los datos de la mascota");
+        var strPet = readMsgFromClient();
+        System.out.println(strPet);
+        var pet = new Pet(strPet.split("_"));
+        System.out.println("llega para ser guardado: " + pet);
+        responseCode = String.valueOf(petDAO.postPet(pet));
+        sendMsgToClient(responseCode);
+        sStatus = 10;
     }
 
     private void recoveryPass() throws IOException {
@@ -168,13 +208,45 @@ public class ServerThread extends Thread{
 
         if (!servomotor.isBussy()) {
             System.out.println("Suministrando comida al comedero");
-            var res = this.servomotor.supplyFood();
+            var res = this.servomotor.supplyFood(); //this.servomotor.supplyFlashesFood(); //
+            if(res) sfaDAO.postSupplyFood(new SupplyFoodAudit(loggedUser,250)); // TODO --> Erase hardcored value
             responseCode = res ? "1" : "0";
         }else{
 
             System.err.println("Espere!!! El servomotor para el suministro de alimentos está en uso");
         }
         sendMsgToClient(responseCode);
+        sStatus = 10;
+    }
+
+    private void getSupplyFoodAudits() throws IOException {
+        System.out.println("Preparando para obtener el listado de auditoría");
+        var listOfAuditSupplyFood = sfaDAO.getAll();
+
+        // TODO -> Refact
+        String res = "";
+        for ( SupplyFoodAudit item : listOfAuditSupplyFood) {
+            var aStrDateTime = item.getTimeStamp().split(" ");
+            res += item.getID() + "_" + item.getUser().getEmail() + "_" + aStrDateTime[0] + "_" + aStrDateTime[1] + "&";
+        }
+
+        sendMsgToClient(res);
+        sStatus = 10;
+    }
+
+    private void getLastSupplyFoodAudit() throws IOException {
+        System.out.println("Recuperando el útimo registro de suministro de alimento dispensado");
+        var lastSfa = sfaDAO.getLastSupplyFoodRegister();
+        var aStrDateTime = lastSfa.getTimeStamp().split(" ");
+        var res = lastSfa.getID() + "_" + lastSfa.getUser().getEmail() + "_" + aStrDateTime[0] + "_" + aStrDateTime[1];
+        sendMsgToClient(res);
+    }
+
+    private void getPetData() throws IOException {
+        System.out.println("Preparando para obtener los datos de la mascota");
+        var pet = petDAO.getFirstPet();
+
+        sendMsgToClient(pet != null ? pet.toString() : "0");
         sStatus = 10;
     }
 
