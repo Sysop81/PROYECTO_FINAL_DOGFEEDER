@@ -1,12 +1,11 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 import com.pi4j.io.gpio.RaspiPin;
-import org.example.Utils.Tools;
-import org.example.crypto.Hasher;
-import org.example.mail.Email;
+import org.dogfeeder.Utils.Tools;
+import org.dogfeeder.crypto.Hasher;
+import org.dogfeeder.mail.Email;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerThread extends Thread{

@@ -1,6 +1,5 @@
-package org.example.model;
+package org.dogfeeder.model;
 
-import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
 

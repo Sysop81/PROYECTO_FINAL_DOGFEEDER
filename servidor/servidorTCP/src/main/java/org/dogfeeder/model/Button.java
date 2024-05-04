@@ -1,4 +1,4 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;

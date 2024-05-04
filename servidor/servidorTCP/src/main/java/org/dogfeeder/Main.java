@@ -1,10 +1,10 @@
-package org.example;
+package org.dogfeeder;
 
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-import org.example.model.*;
+import org.dogfeeder.model.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 

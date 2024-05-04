@@ -1,9 +1,8 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class PetDAO {
     private Conexion con;

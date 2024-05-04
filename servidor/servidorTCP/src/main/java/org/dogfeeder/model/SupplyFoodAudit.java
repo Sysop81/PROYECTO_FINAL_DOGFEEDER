@@ -1,4 +1,4 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 public class SupplyFoodAudit {
     private int ID;

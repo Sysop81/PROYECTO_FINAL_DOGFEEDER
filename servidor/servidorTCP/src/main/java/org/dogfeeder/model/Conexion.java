@@ -1,4 +1,4 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

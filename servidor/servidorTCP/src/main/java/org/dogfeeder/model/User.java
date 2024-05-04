@@ -1,4 +1,4 @@
-package org.example.model;
+package org.dogfeeder.model;
 
 public class User {
     private int ID;

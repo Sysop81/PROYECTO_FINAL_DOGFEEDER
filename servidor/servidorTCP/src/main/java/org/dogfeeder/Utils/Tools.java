@@ -1,4 +1,4 @@
-package org.example.Utils;
+package org.dogfeeder.Utils;
 
 import java.util.Random;
 

@@ -1,15 +1,8 @@
-package org.example.mail;
-
-import org.example.crypto.Hasher;
+package org.dogfeeder.mail;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.search.FlagTerm;
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import java.util.Properties;
 
 public class Email {
