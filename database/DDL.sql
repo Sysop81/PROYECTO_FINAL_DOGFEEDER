@@ -42,3 +42,21 @@ CREATE TABLE food (
     trademark VARCHAR(255) UNIQUE NOT NULL,
     grain_type ENUM('small','medium','big')
 );
+
+
+-- Views
+DROP VIEW IF EXISTS audit_supply_food_summary;
+
+CREATE VIEW audit_supply_food_summary AS
+SELECT 
+    YEAR(timestamp) AS year_number,
+    MONTH(timestamp) AS month_number,
+    MONTHNAME(timestamp) AS month_name,
+    COUNT(*) AS count_takes,
+    SUM(weight) AS total_weight
+FROM 
+    audit_supply_food
+GROUP BY 
+    year_number, month_number, month_name
+ORDER BY 
+    year_number DESC, month_number DESC;
