@@ -80,10 +80,14 @@ public class ServerThread extends Thread{
                         getLastSupplyFoodAudit();
                         break;
                     case 6:
+                        // Get audit data for statistic graph
+                        getDataForSupplyFoodStatistic();
+                        break;
+                    case 7:
                         // Get Pet data
                         getPetData();
                         break;
-                    case 7:
+                    case 8:
                         // POST && PUT Pet data
                         updatePetData();
                         break;
@@ -124,10 +128,12 @@ public class ServerThread extends Thread{
                 return 4;
             case "LASTAUDIT":
                 return 5;
-            case "PETDATA":
+            case "GRAPHAUDITS":
                 return 6;
-            case "POSTPET":
+            case "PETDATA":
                 return 7;
+            case "POSTPET":
+                return 8;
 
         }
 
@@ -243,6 +249,22 @@ public class ServerThread extends Thread{
         var aStrDateTime = lastSfa.getTimeStamp().split(" ");
         var res = lastSfa.getID() + "_" + lastSfa.getUser().getEmail() + "_" + aStrDateTime[0] + "_" + aStrDateTime[1];
         sendMsgToClient(res);
+        sStatus = 10;
+    }
+
+    private void getDataForSupplyFoodStatistic() throws IOException {
+        System.out.println("Recuperando historial de estadítica para el alimento suministrado");
+        var listOfStatistic = sfaDAO.getStatisticByYear(2024); // TODO -> Send first to client
+
+        // TODO -> Refact
+        String res = "";
+        for ( StatisticFood item : listOfStatistic) {
+            res += item.getMonth_number() + "_" + item.getCount_takes() + "&";
+            System.out.println(res);
+        }
+
+        sendMsgToClient(res);
+        sStatus = 10;
     }
 
     private void getPetData() throws IOException {
