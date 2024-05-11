@@ -1,4 +1,7 @@
-package org.dogfeeder.model;
+package org.dogfeeder.database;
+
+import org.dogfeeder.database.Conexion;
+import org.dogfeeder.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

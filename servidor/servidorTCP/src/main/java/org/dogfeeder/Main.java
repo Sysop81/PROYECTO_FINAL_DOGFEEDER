@@ -4,6 +4,10 @@ import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import org.dogfeeder.cli.CLInterface;
+import org.dogfeeder.database.Conexion;
+import org.dogfeeder.database.SupplyFoodAuditDAO;
+import org.dogfeeder.database.UserDAO;
 import org.dogfeeder.model.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,12 +16,14 @@ import java.net.Socket;
 public class Main {
 
     private static Conexion con;
-    private static final int PORT = 2000;
+    private static int port;
     private static GpioPinDigitalInput button_food;
     private static GpioPinDigitalInput button_food_tray;
     private static boolean isTrayOpen = false;
     private static User defaultUser;
     private static SupplyFoodAuditDAO sfaDAO;
+
+    private static Logger4j logger;
 
 
     public static void main(String[] args) {
@@ -29,8 +35,8 @@ public class Main {
 
         // TODO: DELETE WHEN REPAIR A INITIAL MOVE PROBLEM ON POWER ON
         new ServoMotor(RaspiPin.GPIO_01.getAddress()).resetServoPosition();
-
-
+        logger = new Logger4j(Main.class);
+        port = Integer.parseInt(System.getenv("TCP_PORT"));
         con = new Conexion(System.getenv("DB_USER"),System.getenv("DB_PASSWORD"));
         var userDAO = new UserDAO(con);
         sfaDAO = new SupplyFoodAuditDAO(con);
@@ -74,16 +80,17 @@ public class Main {
     }
 
     private static void startDogFeederServer(){
-        try(ServerSocket serverSocket = new ServerSocket(PORT)){
-            System.out.println("Servicio TCP DOGFEEDER - Puerto: " + PORT);
+        try(ServerSocket serverSocket = new ServerSocket(port)){
+            CLInterface.showAppTitle("Servicio TCP DOGFEEDER - Puerto: " + port);
+            logger.setInfo("Servicio iniciado");
             while(true){
                 Socket sClient = serverSocket.accept();
-                System.out.println("Cliente conectado");
+                CLInterface.showAlertInfo("Cliente conectado");
                 new ServerThread(sClient,con).start();
             }
 
         } catch (Exception e) {
-            System.err.println("Se ha producido una excepción \n" + e.getMessage());
+            CLInterface.showAlertError("Se ha producido un error en servicio \n" + e.getMessage());
         }
     }
 }

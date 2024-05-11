@@ -3,6 +3,10 @@ package org.dogfeeder.model;
 import com.pi4j.io.gpio.RaspiPin;
 import org.dogfeeder.Utils.Tools;
 import org.dogfeeder.crypto.Hasher;
+import org.dogfeeder.database.Conexion;
+import org.dogfeeder.database.PetDAO;
+import org.dogfeeder.database.SupplyFoodAuditDAO;
+import org.dogfeeder.database.UserDAO;
 import org.dogfeeder.mail.Email;
 
 import java.io.*;
@@ -20,7 +24,7 @@ public class ServerThread extends Thread{
     private int sStatus;
     private String responseCode;
 
-    public ServerThread(Socket client,Conexion con){
+    public ServerThread(Socket client, Conexion con){
         super("Cliente-" + (index++));
         this.client = client;
         this.sStatus = 0;
