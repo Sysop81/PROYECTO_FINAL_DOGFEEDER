@@ -43,6 +43,14 @@ CREATE TABLE food (
     grain_type ENUM('small','medium','big')
 );
 
+-- Query to set the settings
+CREATE TABLE settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    food_ration	INT DEFAULT 150,
+    led_on BOOLEAN DEFAULT FALSE,
+    notify_hopper_low BOOLEAN DEFAULT FALSE,
+    notify_feeder_without_food BOOLEAN DEFAULT FALSE	
+);
 
 -- Views
 DROP VIEW IF EXISTS audit_supply_food_summary;
