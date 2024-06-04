@@ -1,17 +1,24 @@
 package org.dogfeeder.database;
 
-import org.dogfeeder.database.Conexion;
+
+import org.dogfeeder.cli.CLInterface;
+import org.dogfeeder.model.Logger4j;
 import org.dogfeeder.model.StatisticFood;
 import org.dogfeeder.model.SupplyFoodAudit;
 import org.dogfeeder.model.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Clase SupplyFoodAuditDAO
+ * Clase de acceso a datos para manejar las E/S de información desde la DB para los registros de auditoría de suministro
+ * de alimento
+ */
 public class SupplyFoodAuditDAO {
     private Conexion con;
+    private static Logger4j logger = new Logger4j(SupplyFoodAuditDAO.class);
 
     /**
      * Constructor de clase
@@ -20,6 +27,12 @@ public class SupplyFoodAuditDAO {
         this.con = con;
     }
 
+    /**
+     * Método postSupplyFood
+     * Método encargado de realizar una inserción de un nuevo registro de audoría de alimento en la DB
+     * @param sfa Instancia que representa el registro de auditoría
+     * @return int Valor que representa el resultado de la operación
+     */
     public int postSupplyFood(SupplyFoodAudit sfa){
         String query = "INSERT INTO audit_supply_food (id_user,weight) VALUES(?,?)";
         int retorno = 0;
@@ -33,18 +46,24 @@ public class SupplyFoodAuditDAO {
             ps.close();
 
         } catch (SQLException e) {
-            System.out.println("Error al insertar registro de auditoría para el suministro de comida " + e.getMessage());
+            var msg = "Error al insertar registro de auditoría para el suministro de alimento." + e.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
         }
 
         return retorno;
     }
 
-
+    /**
+     * Método getAll [Limit 100]
+     * Método encargado de llevar al cliente los 100 últimos registros de auditoría
+     * @return ArrayList<SupplyFoodAudit> Listado con los registros de auditoría
+     */
     public ArrayList<SupplyFoodAudit> getAll(){
         String query = "SELECT a.*, u.email " +
                        "FROM audit_supply_food a, user u  " +
                        "WHERE a.id_user = u.id " +
-                       "ORDER BY a.timestamp DESC";
+                       "ORDER BY a.timestamp DESC LIMIT 100";
         ArrayList<SupplyFoodAudit> listFoodAudits = new ArrayList<>();
         User user = null;
         try {
@@ -64,13 +83,20 @@ public class SupplyFoodAuditDAO {
             ps.close();
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener todos los registros de auditoría " + e.getMessage());
+            var msg = "Error al obtener los 100 últimos registros de auditoría " + e.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
         }
 
         return listFoodAudits;
     }
 
 
+    /**
+     * Método getLastSupplyFoodRegister
+     * Método encargdo de obtener el último registro de auditoría
+     * @return SupplyFoodAudit Instancia que representa el último registro de auditoría
+     */
     public SupplyFoodAudit getLastSupplyFoodRegister(){
         String query = "SELECT a.*, u.email " +
                 "FROM audit_supply_food a, user u  " +
@@ -98,12 +124,22 @@ public class SupplyFoodAuditDAO {
             ps.close();
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener el útimo registro de auditoría " + e.getMessage());
+            var msg = "Error al obtener el útimo registro de auditoría " + e.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
         }
 
         return supplyFoodAudit;
     }
 
+    /**
+     * Método getStatisticByYear
+     * Método encargado de obtener la información necesaria para montar una gráfica de estadística en la que se representan
+     *  1º -> Número de tomas por mensualidad [Año en curso]
+     *  2º -> Cantidad de alimento [gramos] por mesualidad [Año en curso]
+     * @param year Año en curso
+     * @return ArrayList<StatisticFood> Listado con instancias StatisticFood para montar una gráfica de barras
+     */
     public ArrayList<StatisticFood> getStatisticByYear(int year){
         String query = "SELECT \n" +
                         "    COALESCE(audit.year_number, YEAR(CURRENT_DATE())) AS year_number,\n" +
@@ -160,7 +196,9 @@ public class SupplyFoodAuditDAO {
             ps.close();
 
         } catch (SQLException e) {
-            System.out.println("Error al obtener loas registros para el año " + year + ". " + e.getMessage());
+            var msg = "Error al obtener loas registros para el año " + year + ". " + e.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
         }
 
         return listStatistic;
