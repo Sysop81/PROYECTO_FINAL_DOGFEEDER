@@ -1,16 +1,24 @@
 package org.dogfeeder.crypto;
 
+import org.dogfeeder.cli.CLInterface;
+import org.dogfeeder.model.Logger4j;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * Clase Hasher
+ * Se encarga de la codificación unidireccional
+ */
 public class Hasher {
+
+    private static Logger4j logger = new Logger4j(Hasher.class);
 
     /**
      * Método encode. Unidireccional [MessageDigest][SHA-256]
      * Este método se encarga de Hashear de forma unidireccional la cadena que entra como parametro.
      * @param originalPassword
-     * @return String
+     * @return String Cadena codificada
      * @throws NoSuchAlgorithmException
      */
     public static String encode(String originalPassword){
@@ -27,7 +35,9 @@ public class Hasher {
             // Step 4. Se convierte el hash de bytes a una representación Base64 y se retorna
             return Base64.getEncoder().encodeToString(hashedBytes);
         }catch (NoSuchAlgorithmException e) {
-            System.out.println(e.getMessage());
+            var msg = "Se ha producido un error al codificar la cadena de entrada." + e.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
         }
 
         return null;
