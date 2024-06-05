@@ -9,6 +9,7 @@ CREATE TABLE user (
   id int NOT NULL AUTO_INCREMENT,
   email VARCHAR(255) UNIQUE NOT NULL, 
   password VARCHAR(255) NOT NULL,
+  valid_mail BOOLEAN DEFAULT TRUE,
   PRIMARY KEY (id) 
 );
 
@@ -36,12 +37,7 @@ CREATE TABLE pet (
     CONSTRAINT chk_month_of_year CHECK (vac_month BETWEEN 1 AND 12)
 );
 
--- Query to set a food
-CREATE TABLE food (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    trademark VARCHAR(255) UNIQUE NOT NULL,
-    grain_type ENUM('small','medium','big')
-);
+
 
 -- Query to set the settings
 CREATE TABLE settings (
