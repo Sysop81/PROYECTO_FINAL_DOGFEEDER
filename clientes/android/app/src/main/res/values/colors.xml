@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pink">#EC0C92</color>
+    <color name="light_pink">#88FBD3EB</color>
+    <color name="light_purple">#88E2D3FB</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="turquoise">#009688</color>
+    <color name="light_brown">#756757</color>
+
 </resources>

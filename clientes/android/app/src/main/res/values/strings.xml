@@ -1,6 +1,48 @@
 <resources>
     <string name="app_name">DogFeeder</string>
 
+    <!-- Msg -->
+    <string name="info_error_connection">No se encuentra conectado a DOGFEEDER.\n\nActive el WIFI y proceda refrescar la vista.</string>
+    <string name="info_ok_connection">Conexión con DOGFEEDER activa</string>
+    <string name="info_login_error">Login incorrecto</string>
+    <string name="form_error_user">El correo electrónico no puede estar vacío</string>
+    <string name="form_error_password">La contraseña no puede estar vacío</string>
+    <string name="form_error_password_confirm">La contraseña de confirmación no puede estar vacia</string>
+    <string name="form_error_password_no_equals">"La contraseña de confirmación no coincide"</string>
+    <string name="form_error_email">"Correo electrónico no válido"</string>
+    <string name="info_register_ok">Se ha completado el registro correctamente</string>
+    <string name="info_register_error">No se ha completado la operación registro</string>
+    <string name="info_error_logout">Se ha producido un error al cerrar la sesión</string>
+    <string name="info_error_not_valid_code">El código enviado no es válido</string>
+    <string name="info_ok_valid_code">El código es válido</string>
+    <string name="form_error_not_empty_code">El código no puede estar vacío</string>
+    <string name="info_user_registeded">Usuario ya se encuentre registrado</string>
+    <string name="info_error_code_not_send">No se ha podido enviar el código de verificación</string>
+    <string name="info_change_pass_ok">Contraseña guardada con éxito</string>
+    <string name="info_change_pass_error">No se ha podido establecer la nueva contraseña</string>
+    <string name="info_error_reset_recovery_proccess">Error de conexión, no es posible seguir con el proceso.\n\nSerá redireccionado a la pantalla de LOGIN</string>
+    <string name="info_error_email_not_register">Email no registrado en DOGFEEDER</string>
+    <string name="info_error_not_register_pet">No existe una mascota registrada.</string>
+    <string name="info_pet_register_ok">Mascota actualizada correctamente</string>
+    <string name="info_error_pet_register">No se han actualizado los datos de la mascota</string>
+    <string name="form_pet_empty_error">El campo no puede estar vacío</string>
+    <string name="form_pet_not_numeric_or_characters_error">"El campo no puede contener caractéres especiales o numéricos"</string>
+    <string name="info_error_food_supplied">Comida no suministrada</string>
+    <string name="info_ok_food_supplied">Comida suministrada</string>
+    <string name="info_wait_food_supplied">Espere!!! Se está suministrando alimento en este momento</string>
+    <string name="info_error_empty_hopper">La tolva presenta un nivel crítico, es posible que no haya alimento.\nExiste la posibilidad de atasco en el mecanismo de suministro.</string>
+    <string name="info_error_stuck_hopper">Se ha producido un atasco en el mecanismo de suministro de alimento</string>
+    <string name="info_error_empty_audit_data">No existen registros de auditoría</string>
+    <string name="info_error_empty_graph_data">No existen datos que mostrar en la gráfica</string>
+    <string name="info_error_setting_post">Se ha producido un error al aplicar la configuración</string>
+    <string name="info_ok_setting_post">Configuración aplicacda correctamente</string>
+
+    <!-- Dialog -->
+    <string name="dialog_info_title">Información</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_close">Cerrar</string>
+
+
     <!-- Login view -->
     <string name="lbl_login">Iniciar sesión</string>
     <string name="user">Usuario</string>
@@ -20,18 +62,93 @@
     <string name="placeholder_verify_code">Introduzca código obtenido vía mail</string>
     <string name="btn_verify_code">Verificar código de seguridad</string>
     <string name="btn_change_password">Cambiar contraseña</string>
+    <string name="btn_get_verify_code">Obtener código de verificación</string>
+    <string name="txt_recovery_title">Recuperar contraseña</string>
 
     <!-- FOOD Fragment view -->
     <string name="txt_food">Alimentar mascota</string>
     <string name="btn_food">Comenzar</string>
+    <string name="txt_last_food_supplied">Última comida dispensada a %s</string>
+    <string name="txt_hopper_state">Estado de la tolva</string>
+
+    <!-- Tab selector fragment -->
+    <string name="tab_registers">Registros</string>
+    <string name="tab_statistics">Estadítica</string>
+
+    <!-- Audit fragment view -->
+    <string name="txt_audit_title">Tomas de alimento</string>
+    <string name="txt_title_audit_user">Realizada por</string>
+    <string name="txt_title_audit_date">Fecha</string>
+    <string name="txt_audit_time">Hora</string>
+    <string name="title_search">buscar por usuario</string>
+
+    <!-- Audit fragment graph view -->
+    <string name="txt_graph_title">Alimento dispensado</string>
+    <string name="txt_radio_count">Conteo de tomas</string>
+    <string name="txt_radio_food_sum">alimento dispensado</string>
+    <string name="label_graph_sum">Cantidad de gramos dispensada por mensualidad</string>
+    <string name="label_graph_count">Número de tomas total por mensualidad</string>
+
+    <!-- PET Fragment view -->
+    <string name="txt_pet_title"> Mi mascota</string>
+    <string name="txt_pet_input_title">Nombre</string>
+    <string name="txt_pet_breed_input_title">Raza</string>
+    <string name="txt_pet_name">Nombre de su mascota</string>
+    <string name="txt_pet_breed">Raza de su mascota</string>
+    <string name="txt_pet_weight">Peso</string>
+    <string name="txt_spinner_small">Pequeña</string>
+    <string name="txt_spinner_medium">Mediana</string>
+    <string name="txt_spinner_big">Grande</string>
+    <string name="txt_pet_birthday">Fecha de nacimiento</string>
+    <string name="txt_pet_weight_kg">Kg</string>
+    <string name="txt_pet_weight_and_tall">Peso y tamaño</string>
+    <string name="txt_pet_vaccination">Vacunación antirrábica</string>
+    <string name="switch_vaccine_notification">Notificar cada año vía e-mail</string>
+    <string name="btn_save_pet_settings">Guardar</string>
+
+    <!-- Settings fragment -->
+    <string name="txt_settings_title">Configuración</string>
+    <string name="txt_settings_led_title">Iluminación</string>
+    <string name="txt_setting_led_on">Encender leds</string>
+    <string name="txt_settings_notify_title">Notificaciones</string>
+    <string name="txt_setting_hopper_low">Notificar nivel bajo tolva</string>
+    <string name="txt_settings_feeder_without_food">Notificar comedero vacío</string>
+    <string name="txt_settings_food_ration_title">Alimento</string>
+    <string name="txt_settings_food_ration">Peso de corte</string>
+    <string name="txt_settings_grams">gramos</string>
+    <string name="txt_settings_log_title">Informes</string>
+    <string name="txt_settings_get_get_report">Solicitar imforme de Logs de sistema</string>
+    <string name="txt_settings_get_get_report_wait">Espere a que se complete la operación solicitada</string>
 
     <!-- Menus -->
     <string name="closeSession">Cerrar sesión</string>
     <string name="title_more">mas</string>
-    <string name="menu_baseline_home">Home</string>
-    <string name="menu_baseline_list">Actividades</string>
-    <string name="menu_baseline_fav">Favoritos</string>
-    <string name="menu_baseline_loc">Localizacion</string>
+    <string name="menu_baseline_food">Alimentar mascota</string>
+    <string name="menu_baseline_list">Registro tomas de alimento</string>
+    <string name="menu_baseline_pet">Nuestra mascota</string>
+    <string name="menu_baseline_settings">Configuración</string>
     <string name="navigation_drawer_open">Abierto</string>
     <string name="navigation_drawer_close">Cerrado</string>
+
+    <!-- Form inputs -->
+    <string name="spinner_pet_size_small">Raza pequeña</string>
+    <string name="spinner_pet_size_med">Raza mediana</string>
+    <string name="spinner_pet_size_big">Raza grande</string>
+    
+    <!-- Months -->
+    <string-array name="months">
+        <item>enero</item>
+        <item>febrero</item>
+        <item>marzo</item>
+        <item>abril</item>
+        <item>mayo</item>
+        <item>junio</item>
+        <item>julio</item>
+        <item>agosto</item>
+        <item>septiembre</item>
+        <item>octubre</item>
+        <item>noviembre</item>
+        <item>diciembre</item>
+    </string-array>
+
 </resources>

@@ -1,12 +1,16 @@
 package com.lopez.guillen.dogfeeder
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.lopez.guillen.dogfeeder.model.FragmentInteractionListener
 
+/**
+ * Clase LoginActivity
+ * Representa el Activity de entrada a la aplicación, sobre su frameLayout se montan los fragmentos para LOGIN,REGISTER y
+ * RECOVERY.
+ */
 class LoginActivity : AppCompatActivity(), FragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,11 @@ class LoginActivity : AppCompatActivity(), FragmentInteractionListener {
         fragmentTransaction.commit()
     }
 
+    /**
+     * Manejador de eventos onHandleRecoveryPassword
+     * Este método se encarga de manejar el click sobre el botón para la recuperación del password de usuario. Para ello carga en
+     * el framelayout la vista de recuparación de password.
+     */
     override fun onHandleRecoveryPassword() {
         // Step 1. Instanciamos el objeto encargado de interactuar con los fragments
         val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -56,6 +65,7 @@ class LoginActivity : AppCompatActivity(), FragmentInteractionListener {
     /**
      * Método getLoginContext
      * Getter para el contexto del activity
+     * @return this Contexto que representa al activity
      */
     fun getLoginContext(): Activity {
         return this
