@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".FragmentSettings">
+    <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="234dp"
+            android:layout_height="42dp"
+            android:id="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:text="@string/txt_settings_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="34sp" android:textStyle="bold"
+            app:layout_constraintVertical_bias="0.932" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.568"
+            app:layout_constraintBottom_toTopOf="@+id/divider"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="132dp"/>
+    <ImageView
+            android:layout_width="51dp"
+            android:layout_height="40dp" app:srcCompat="@drawable/ic_baseline_settings"
+            android:id="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="84dp"
+            app:layout_constraintHorizontal_bias="0.885"/>
+    <Switch
+            android:text="@string/txt_setting_led_on"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:textSize="18sp" android:id="@+id/switchLedOn"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_pet_input_title"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="65dp"
+            android:layout_marginEnd="30dp" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.013" app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_baseline_light"
+            android:id="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.077" app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintBottom_toTopOf="@+id/switchLedOn" app:layout_constraintVertical_bias="0.74"/>
+
+    <TextView
+            android:text="@string/txt_settings_led_title"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_input_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.206"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" android:layout_marginTop="24dp"/>
+    <TextView
+            android:text="@string/txt_settings_notify_title"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchLedOn" android:layout_marginTop="24dp"
+            app:layout_constraintHorizontal_bias="0.228"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_baseline_notifications"
+            android:id="@+id/imageView7"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchLedOn"
+            app:layout_constraintHorizontal_bias="0.077"
+            app:layout_constraintVertical_bias="0.05" app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Switch
+            android:text="@string/txt_setting_hopper_low"
+            android:layout_width="match_parent"
+            android:layout_height="35dp" android:id="@+id/switchNotifyHopperLow"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:textStyle="bold" android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="65dp" android:layout_marginEnd="30dp" android:layout_marginTop="8dp"/>
+    <Switch
+            android:text="@string/txt_settings_feeder_without_food"
+            android:layout_width="match_parent"
+            android:layout_height="35dp" android:id="@+id/switchNotifyFeederEmpty"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:textStyle="bold" android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchNotifyHopperLow"
+            app:layout_constraintVertical_bias="0.028" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="65dp"
+            android:layout_marginEnd="30dp"/>
+
+    <TextView
+            android:text="@string/txt_settings_food_ration_title"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_setting_food_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchNotifyFeederEmpty"
+            app:layout_constraintVertical_bias="0.083" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.204"/>
+    <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp" app:srcCompat="@drawable/ic_baseline_food" android:id="@+id/imageView8"
+            app:layout_constraintEnd_toStartOf="@+id/txt_setting_food_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchNotifyFeederEmpty"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.714"
+            app:layout_constraintVertical_bias="0.088"/>
+
+    <TextView
+            android:text="@string/txt_settings_food_ration"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_settings_food_ration"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_setting_food_title"
+            app:layout_constraintVertical_bias="0.038" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="65dp"/>
+    <Spinner
+            android:layout_width="132dp"
+            android:layout_height="23dp" android:id="@+id/spinnerMaxFoodRation"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_setting_food_title"
+            app:layout_constraintVertical_bias="0.041"
+            app:layout_constraintStart_toEndOf="@+id/txt_settings_food_ration"
+            app:layout_constraintHorizontal_bias="0.009"/>
+    <TextView
+            android:text="@string/txt_settings_grams"
+            android:textStyle="bold" android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerMaxFoodRation"
+            app:layout_constraintStart_toStartOf="@+id/spinnerMaxFoodRation"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerMaxFoodRation"
+            app:layout_constraintHorizontal_bias="0.595" android:layout_marginBottom="4dp"/>
+    <ImageView
+            android:src="@drawable/ic_baseline_newspaper_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/imglogs"
+            app:layout_constraintEnd_toStartOf="@+id/textView7" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_settings_food_ration" android:layout_marginTop="28dp"
+            app:layout_constraintHorizontal_bias="0.69"/>
+    <TextView
+            android:text="@string/txt_settings_log_title"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.206"
+            app:layout_constraintTop_toBottomOf="@+id/txt_settings_food_ration"
+            app:layout_constraintVertical_bias="0.092"/>
+    <Button
+            style="@style/Widget.Material3.Button"
+            android:background="@drawable/personalized_button"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content" android:id="@+id/btnWeightStop"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/spinnerMaxFoodRation"
+            app:layout_constraintTop_toBottomOf="@+id/txt_setting_food_title"
+            app:icon="@drawable/baseline_save_24" app:iconGravity="textStart"
+            app:iconSize="24dp" app:iconPadding="1dp" app:layout_constraintHorizontal_bias="0.666"
+            android:layout_marginEnd="30dp" android:layout_marginTop="8dp"/>
+    <Button
+            android:text="@string/txt_settings_get_get_report"
+            style="@style/Widget.Material3.Button"
+            android:background="@drawable/personalized_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnReport"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.487" app:layout_constraintVertical_bias="0.065"
+            android:layout_marginStart="65dp" android:layout_marginEnd="30dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
