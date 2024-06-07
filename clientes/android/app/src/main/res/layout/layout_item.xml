@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="80dp"
+                                                   android:paddingLeft="10dp"
+                                                   android:paddingTop="5dp"
+                                                   android:paddingRight="10dp">
+
+
+    <TextView
+            android:text="@string/txt_title_audit_date"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTitleDate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="0.836"
+            app:layout_constraintHorizontal_bias="0.273"/>
+    <TextView
+            android:text="@string/txt_audit_time"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTitleTime"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="0.836"
+            app:layout_constraintHorizontal_bias="0.823"/>
+    <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/txtAuditUser"
+            app:layout_constraintStart_toEndOf="@+id/textTilteUser" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.071" app:layout_constraintVertical_bias="0.18"
+            android:layout_marginLeft="5sp"/>
+    <TextView
+            android:text="@string/txt_title_audit_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textTilteUser"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.327"
+            app:layout_constraintVertical_bias="0.18"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAuditDate"
+            app:layout_constraintEnd_toStartOf="@+id/txtTitleTime"
+            app:layout_constraintStart_toEndOf="@+id/txtTitleDate" app:layout_constraintHorizontal_bias="0.089"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.836"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txtAuditTime"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtTitleTime" app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="0.836"/>
+    <ImageView
+            android:layout_width="77dp"
+            android:layout_height="64dp" app:srcCompat="@drawable/ic_baseline_food" android:id="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+    />
+    <TextView
+            android:text="TextView"
+            android:textSize="12sp"
+            android:layout_width="42dp"
+            android:layout_height="15dp" android:id="@+id/txtTitleWeight"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4" app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintVertical_bias="0.734"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
