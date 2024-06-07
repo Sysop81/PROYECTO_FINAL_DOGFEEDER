@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".FragmentPet">
+
+    <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="234dp"
+            android:layout_height="42dp"
+            android:id="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:text="@string/btn_save_pet_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSavePetSettings"
+            android:background="@drawable/personalized_button"
+            android:onClick="handleBtnSavePetSettings"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="116dp" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"/>
+    <TextView
+            android:text="@string/txt_pet_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="34sp" android:textStyle="bold"
+            app:layout_constraintVertical_bias="0.932" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.568"
+            app:layout_constraintBottom_toTopOf="@+id/divider"/>
+    <ImageView
+            android:layout_width="51dp"
+            android:layout_height="40dp" app:srcCompat="@drawable/ic_baseline_pet" android:id="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView2" app:layout_constraintHorizontal_bias="0.827"
+            tools:ignore="MissingConstraints" app:layout_constraintBottom_toTopOf="@+id/divider"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.873"/>
+    <TextView
+            android:text="@string/txt_pet_input_title"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_input_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            tools:ignore="MissingConstraints" app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintBottom_toTopOf="@+id/txtPetName" app:layout_constraintVertical_bias="1.0"
+            android:layout_marginStart="30dp"/>
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="30dp" android:layout_marginEnd="30dp"
+            app:layout_constraintVertical_bias="0.25" android:id="@+id/txtPetName">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/txt_pet_name"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+            android:text="@string/txt_pet_breed_input_title"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_breed_input_title"
+
+            tools:ignore="MissingConstraints"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/txtPetName"
+            app:layout_constraintBottom_toTopOf="@+id/txtPetBreed" android:layout_marginStart="30dp"
+            app:layout_constraintVertical_bias="1.0"/>
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="30dp" android:layout_marginEnd="30dp"
+            app:layout_constraintVertical_bias="0.38" android:id="@+id/txtPetBreed">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/txt_pet_breed"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+            android:text="@string/txt_pet_birthday"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_birthday_input_title"
+
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/txtPetBreed"
+            app:layout_constraintBottom_toTopOf="@+id/picker" android:layout_marginStart="30dp"
+            app:layout_constraintVertical_bias="1.0"/>
+    <Button
+            android:layout_width="68dp"
+            android:layout_height="46dp"
+            android:id="@+id/btnPicker"
+            android:onClick="handleBtnPetBirthday"
+            android:backgroundTint="@color/transparent"
+            android:drawableTop="@drawable/baseline_calendar_month_24"
+            android:paddingTop="0dp"
+
+            android:layout_gravity="center"
+            android:paddingLeft="1dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/picker"
+            app:layout_constraintHorizontal_bias="0.0" tools:ignore="MissingConstraints"
+            android:layout_marginStart="30dp" app:layout_constraintTop_toBottomOf="@+id/txt_pet_birthday_input_title"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:id="@+id/picker"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:hint="@string/txt_pet_birthday"
+            android:gravity="center"
+            android:textSize="16sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="RtlCompat"
+            app:layout_constraintTop_toBottomOf="@+id/txtPetBreed" android:layout_marginTop="36dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.385"/>
+
+    <TextView
+            android:text="@string/txt_pet_weight_and_tall"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_weight_and_tall"
+
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/picker"
+            app:layout_constraintBottom_toTopOf="@+id/txtPetWeight" android:layout_marginStart="30dp"
+            app:layout_constraintVertical_bias="1.0"/>
+    <View
+            android:id="@+id/divider"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@+id/txtPetName"
+            app:layout_constraintVertical_bias="0.772"/>
+
+    <EditText
+            android:text="@string/txt_pet_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/txtPetWeight"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="30dp" app:layout_constraintTop_toBottomOf="@+id/picker"
+            android:layout_marginTop="32dp"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="47dp" android:id="@+id/spinner"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtPetWeight" app:layout_constraintTop_toBottomOf="@+id/picker"
+            android:layout_marginTop="32dp" app:layout_constraintHorizontal_bias="0.433"/>
+    <TextView
+            android:text="@string/txt_pet_weight_kg"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="@+id/txtPetWeight"
+            app:layout_constraintTop_toTopOf="@+id/txtPetWeight"
+            app:layout_constraintBottom_toBottomOf="@+id/txtPetWeight"
+            app:layout_constraintStart_toStartOf="@+id/txtPetWeight" app:layout_constraintHorizontal_bias="0.947"
+            app:layout_constraintVertical_bias="0.478"/>
+
+    <TextView
+            android:text="@string/txt_pet_vaccination"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/txt_pet_vaccination_title"
+
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/txtPetWeight"
+            android:layout_marginTop="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="30dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="47dp" android:id="@+id/spinner_vaccine_day"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/txt_pet_vaccination_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/spinner_vaccine_month" android:layout_marginStart="30dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:id="@+id/spinner_vaccine_month"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/txt_pet_vaccination_title"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="132dp"/>
+    <Switch
+            android:text="@string/switch_vaccine_notification"
+            android:layout_width="match_parent"
+            android:layout_height="35dp" android:id="@+id/switchVaccineNotify"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnSavePetSettings"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_vaccine_month"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.409"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
