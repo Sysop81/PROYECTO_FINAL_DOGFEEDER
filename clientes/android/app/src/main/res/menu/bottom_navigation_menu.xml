@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menuHome"
-          android:title="@string/menu_baseline_home"
+    <item android:id="@+id/menuFood"
+          android:title="@string/menu_baseline_food"
           android:enabled="true"
-          android:icon="@drawable/ic_baseline_home"
+          android:icon="@drawable/ic_baseline_food"
     />
     <item android:id="@+id/menuList"
           android:title="@string/menu_baseline_list"
           android:enabled="true"
           android:icon="@drawable/ic_baseline_list"
     />
-    <item android:id="@+id/menuFav"
-          android:title="@string/menu_baseline_fav"
+    <item android:id="@+id/menuPet"
+          android:title="@string/menu_baseline_pet"
           android:enabled="true"
-          android:icon="@drawable/ic_baseline_fav"
+          android:icon="@drawable/ic_baseline_pet"
     />
-    <item android:id="@+id/menuLoc"
-          android:title="@string/menu_baseline_loc"
+    <item android:id="@+id/menuSettings"
+          android:title="@string/menu_baseline_settings"
           android:enabled="true"
-          android:icon="@drawable/ic_baseline_loc"
+          android:icon="@drawable/ic_baseline_settings"
     />
 </menu>
