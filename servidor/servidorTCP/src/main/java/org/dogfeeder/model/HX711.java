@@ -13,14 +13,13 @@ public class HX711 {
     private final GpioPinDigitalOutput pinCLK;
     private final GpioPinDigitalInput pinDAT;
     private int gain;
-    
+
     // ** Valores implícitos de calibración[Adaptados al cuenco de comida impreso].
     // [TODO] Futuras mejoras, añadir sistema de calibración a la aplicación cliente.
     private final long EMPTY_VALUE = 8388436;
     private final double EMPTY_WEIGHT = 0.0d;
     private final long CALIBRATION_VALUE = 8229924;
     private final double CALIBRATION_WEIGHT = 150d;
-
     private double weight = 0.0d;
     private long value = 0;
 

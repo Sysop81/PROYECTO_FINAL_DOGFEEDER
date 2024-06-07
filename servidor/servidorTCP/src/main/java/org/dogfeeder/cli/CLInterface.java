@@ -71,7 +71,7 @@ public class CLInterface {
         System.out.println(ANSI_RED + "[DEBUG] " + ANSI_WHITE + msg + ANSI_RESET);
     }
 
-    
+
     /**
      * Método tabulateTitle
      * Este método se encarga de tabular el titulo añadiendo espacios para cuadrarlo y que se vea de forma correcta.
