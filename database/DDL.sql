@@ -48,6 +48,13 @@ CREATE TABLE settings (
     notify_feeder_without_food BOOLEAN DEFAULT FALSE	
 );
 
+-- Query to set notifications
+CREATE TABLE notification (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     type ENUM('VACCINE','HOPPER','FEEDER') NOT NULL,
+     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP	
+);
+
 -- Views
 DROP VIEW IF EXISTS audit_supply_food_summary;
 
@@ -64,3 +71,18 @@ GROUP BY
     year_number, month_number, month_name
 ORDER BY 
     year_number DESC, month_number DESC;
+
+-- Triggers
+
+DELIMITER $$
+
+CREATE TRIGGER after_pet_update
+AFTER UPDATE ON pet
+FOR EACH ROW
+BEGIN
+    IF OLD.vac_day <> NEW.vac_day OR OLD.vac_month <> NEW.vac_month THEN
+       DELETE FROM notification WHERE type = 'VACCINE';
+    END IF;
+END$$
+
+DELIMITER ;
