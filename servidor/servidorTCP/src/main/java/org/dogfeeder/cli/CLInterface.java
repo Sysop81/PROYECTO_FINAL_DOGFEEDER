@@ -54,13 +54,24 @@ public class CLInterface {
 
     /**
      * Método showAlertDanger
-     * Mensajes de salidad para identificar acciones de error.
+     * Mensajes de salida para identificar acciones de error.
      * @param msg Mensaje a mostrar
      */
     public static void showAlertDanger(String msg){
         System.out.println( ANSI_RED + "[DANGER] " + msg + ANSI_RESET);
     }
 
+
+    /**
+     * MétodoshowAlertDebug
+     * Mensajes de salida para identificar acciones de DEBUG.
+     * @param msg Mensaje a mostrar
+     */
+    public static void showAlertDebug(String msg){
+        System.out.println(ANSI_RED + "[DEBUG] " + ANSI_WHITE + msg + ANSI_RESET);
+    }
+
+    
     /**
      * Método tabulateTitle
      * Este método se encarga de tabular el titulo añadiendo espacios para cuadrarlo y que se vea de forma correcta.
