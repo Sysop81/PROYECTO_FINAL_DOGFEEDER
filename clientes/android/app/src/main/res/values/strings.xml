@@ -35,7 +35,7 @@
     <string name="info_error_empty_audit_data">No existen registros de auditoría</string>
     <string name="info_error_empty_graph_data">No existen datos que mostrar en la gráfica</string>
     <string name="info_error_setting_post">Se ha producido un error al aplicar la configuración</string>
-    <string name="info_ok_setting_post">Configuración aplicacda correctamente</string>
+    <string name="info_ok_setting_post">Configuración aplicada correctamente</string>
 
     <!-- Dialog -->
     <string name="dialog_info_title">Información</string>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DogFeeder</string>
+
+    <!-- Msg -->
+    <string name="info_error_connection">Not connected to DOGFEEDER.\n\nPlease activate WIFI and refresh the view.</string>
+    <string name="info_ok_connection">Connection to DOGFEEDER active</string>
+    <string name="info_login_error">Login incorrect</string>
+    <string name="form_error_user">Email cannot be empty</string>
+    <string name="form_error_password">Password cannot be empty</string>
+    <string name="form_error_password_confirm">Confirmation password cannot be empty</string>
+    <string name="form_error_password_no_equals">Confirmation password does not match</string>
+    <string name="form_error_email">Invalid email address</string>
+    <string name="info_register_ok">Registration completed successfully</string>
+    <string name="info_register_error">Registration operation not completed</string>
+    <string name="info_error_logout">An error occurred while logging out</string>
+    <string name="info_error_not_valid_code">The code provided is not valid</string>
+    <string name="info_ok_valid_code">The code is valid</string>
+    <string name="form_error_not_empty_code">The code cannot be empty</string>
+    <string name="info_user_registeded">User already registered</string>
+    <string name="info_error_code_not_send">Verification code could not be sent</string>
+    <string name="info_change_pass_ok">Password successfully saved</string>
+    <string name="info_change_pass_error">New password could not be set</string>
+    <string name="info_error_reset_recovery_proccess">Connection error, cannot proceed with the process.\n\nYou will be redirected to the LOGIN screen</string>
+    <string name="info_error_email_not_register">Email not registered with DOGFEEDER</string>
+    <string name="info_error_not_register_pet">No pet registered.</string>
+    <string name="info_pet_register_ok">Pet details updated successfully</string>
+    <string name="info_error_pet_register">Pet details not updated</string>
+    <string name="form_pet_empty_error">The field cannot be empty</string>
+    <string name="form_pet_not_numeric_or_characters_error">The field cannot contain special or numeric characters</string>
+    <string name="info_error_food_supplied">Food not supplied</string>
+    <string name="info_ok_food_supplied">Food supplied</string>
+    <string name="info_wait_food_supplied">Wait!!! Food is being supplied at the moment</string>
+    <string name="info_error_empty_hopper">The hopper has a critical level, it may be empty.\nThere may be a jam in the supply mechanism.</string>
+    <string name="info_error_stuck_hopper">A jam occurred in the food supply mechanism</string>
+    <string name="info_error_empty_audit_data">No audit records found</string>
+    <string name="info_error_empty_graph_data">No data to display in the graph</string>
+    <string name="info_error_setting_post">An error occurred while applying the settings</string>
+    <string name="info_ok_setting_post">Settings applied successfully</string>
+
+    <!-- Dialog -->
+    <string name="dialog_info_title">Information</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_close">Close</string>
+
+    <!-- Login view -->
+    <string name="lbl_login">Login</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="forgot">Forgot your password</string>
+    <string name="submit">Log in</string>
+
+    <!-- Register view & recovery pass -->
+    <string name="txt_title">Register user</string>
+    <string name="txt_email">Email</string>
+    <string name="txt_password">Password</string>
+    <string name="txt_password2">Confirm password</string>
+    <string name="placeholder_email">myemail@example.com</string>
+    <string name="btn_recovery">Request password change</string>
+    <string name="txt_cod_recovery">Verification code</string>
+    <string name="placeholder_verify_code">Enter code received via email</string>
+    <string name="btn_verify_code">Verify security code</string>
+    <string name="btn_change_password">Change password</string>
+    <string name="btn_get_verify_code">Get verification code</string>
+    <string name="txt_recovery_title">Recover password</string>
+
+    <!-- FOOD Fragment view -->
+    <string name="txt_food">Feed pet</string>
+    <string name="btn_food">Start</string>
+    <string name="txt_last_food_supplied">Last food supplied to %s</string>
+    <string name="txt_hopper_state">Hopper status</string>
+
+    <!-- Tab selector fragment -->
+    <string name="tab_registers">Records</string>
+    <string name="tab_statistics">Statistics</string>
+
+    <!-- Audit fragment view -->
+    <string name="txt_audit_title">Food intake</string>
+    <string name="txt_title_audit_user">Conducted by</string>
+    <string name="txt_title_audit_date">Date</string>
+    <string name="txt_audit_time">Time</string>
+    <string name="title_search">search by user</string>
+
+    <!-- Audit fragment graph view -->
+    <string name="txt_graph_title">Food dispensed</string>
+    <string name="txt_radio_count">Intake count</string>
+    <string name="txt_radio_food_sum">food dispensed</string>
+    <string name="label_graph_sum">Amount of grams dispensed per month</string>
+    <string name="label_graph_count">Total number of intakes per month</string>
+
+    <!-- PET Fragment view -->
+    <string name="txt_pet_title">My pet</string>
+    <string name="txt_pet_input_title">Name</string>
+    <string name="txt_pet_breed_input_title">Breed</string>
+    <string name="txt_pet_name">Your pet\'s name</string>
+    <string name="txt_pet_breed">Your pet\'s breed</string>
+    <string name="txt_pet_weight">Weight</string>
+    <string name="txt_spinner_small">Small</string>
+    <string name="txt_spinner_medium">Medium</string>
+    <string name="txt_spinner_big">Large</string>
+    <string name="txt_pet_birthday">Date of birth</string>
+    <string name="txt_pet_weight_kg">Kg</string>
+    <string name="txt_pet_weight_and_tall">Weight and size</string>
+    <string name="txt_pet_vaccination">Rabies vaccination</string>
+    <string name="switch_vaccine_notification">Notify yearly via email</string>
+    <string name="btn_save_pet_settings">Save</string>
+
+    <!-- Settings fragment -->
+    <string name="txt_settings_title">Settings</string>
+    <string name="txt_settings_led_title">Lighting</string>
+    <string name="txt_setting_led_on">Turn on LEDs</string>
+    <string name="txt_settings_notify_title">Notifications</string>
+    <string name="txt_setting_hopper_low">Notify low hopper level</string>
+    <string name="txt_settings_feeder_without_food">Notify empty feeder</string>
+    <string name="txt_settings_food_ration_title">Food</string>
+    <string name="txt_settings_food_ration">Cut weight</string>
+    <string name="txt_settings_grams">grams</string>
+    <string name="txt_settings_log_title">Reports</string>
+    <string name="txt_settings_get_get_report">Request system logs report</string>
+    <string name="txt_settings_get_get_report_wait">Wait for the requested operation to complete</string>
+
+    <!-- Menus -->
+    <string name="closeSession">Log out</string>
+    <string name="title_more">more</string>
+    <string name="menu_baseline_food">Feed pet</string>
+    <string name="menu_baseline_list">Food intake records</string>
+    <string name="menu_baseline_pet">Our pet</string>
+    <string name="menu_baseline_settings">Settings</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
+    <!-- Form inputs -->
+    <string name="spinner_pet_size_small">Small breed</string>
+    <string name="spinner_pet_size_med">Medium breed</string>
+    <string name="spinner_pet_size_big">Large breed</string>
+
+    <!-- Months -->
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+</resources>
