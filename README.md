@@ -1,6 +1,6 @@
-<h1><img style="max-width:90px" src="clientes/android/app/src/main/res/drawable/logobig.png" alt="Logo"><span style='color:#D2B48C;'>DOG</span><span>FEEDER</span></h1>
-<!--![Pre-release](https://img.shields.io/github/v/release/Sysop81/PROYECTO_FINAL_DOGFEEDER?include_prereleases) -->
-![GitHub License](https://img.shields.io/github/license/Sysop81/PROYECTO_FINAL_DOGFEEDER)
+# <h1><img style="width:90px" src="clientes/android/app/src/main/res/drawable/logobig.png" alt="Logo"><span style='color:#D2B48C;'>DOG</span><span>FEEDER</span></h1>
+
+![License](https://img.shields.io/github/license/Sysop81/PROYECTO_FINAL_DOGFEEDER)
 
 
 1. [Introducción](#introducción)
@@ -19,10 +19,7 @@
 
  __¿Con qué propósito se realiza?__
 
-<span style='background-color:black;
-             color:lightgray;
-             padding:5px 10px 5px 10px;
-             border-radius:5px;'><b><span style='color:#D2B48C;'>DOG</span>FEEDER</b> se realiza para cubrir el módulo de proyecto del CFGS DAM IoT</span> 
+<span style='background-color:black;color:lightgray;padding:5px 10px 5px 10px;border-radius:5px;'><b><span style='color:#D2B48C;'>DOG</span>FEEDER</b> se realiza para cubrir el módulo de proyecto del CFGS DAM IoT</span> 
 
 
 ## Modelo 3D
