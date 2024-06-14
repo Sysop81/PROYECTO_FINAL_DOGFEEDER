@@ -37,6 +37,8 @@
     <string name="info_error_empty_graph_data">No data to display in the graph</string>
     <string name="info_error_setting_post">An error occurred while applying the settings</string>
     <string name="info_ok_setting_post">Settings applied successfully</string>
+    <string name="info_ok_setting_request_report">Report sent to your email</string>
+    <string name="info_error_setting_request_report">Report delivery could not be completed</string>
 
     <!-- Dialog -->
     <string name="dialog_info_title">Information</string>

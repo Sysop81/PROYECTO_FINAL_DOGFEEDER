@@ -57,7 +57,6 @@ class FragmentSettings(val _context: Activity) : Fragment() {
         Tools.activateMainSwipeRefresh(_context,true)
 
         // Step 1. Instanciado de controles del formulario
-        //that = this
         progressBar = view.findViewById(R.id.progressBar)
         inSwitchLedOn = view.findViewById(R.id.switchLedOn)
         inSwitchNotifyHopperLow = view.findViewById(R.id.switchNotifyHopperLow)
@@ -94,6 +93,7 @@ class FragmentSettings(val _context: Activity) : Fragment() {
      * por mail al correo del usuario logueado.
      */
     private fun handleGetReport(){
+        progressBar.visibility = View.VISIBLE
         btnReport.setText(getString(R.string.txt_settings_get_get_report_wait))
         btnReport.isEnabled = false
         var response = Session.ServerResponseCodes.ERROR.code
@@ -113,11 +113,12 @@ class FragmentSettings(val _context: Activity) : Fragment() {
                 isConError = true
             } finally {
                 handler.post {
+                    progressBar.visibility = View.GONE
                     if(!isConError){
                         if(!response.equals(Session.ServerResponseCodes.ERROR.code)){
-                            msg = getString(R.string.info_ok_setting_post)
+                            msg = getString(R.string.info_ok_setting_request_report)
                             icon = R.drawable.ic_baseline_info
-                        }else msg = getString(R.string.info_error_setting_post)
+                        }else msg = getString(R.string.info_error_setting_request_report)
                     }
                     Tools.showAlertDialog(_context,msg,icon)
                     btnReport.setText(getString(R.string.txt_settings_get_get_report))
