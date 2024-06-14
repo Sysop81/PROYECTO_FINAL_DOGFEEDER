@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.concurrent.Semaphore;
 
 /**
  * Clase ServerThread
@@ -36,6 +37,11 @@ public class ServerThread extends Thread{
     private static int index = 0;
     private static Logger4j logger = new Logger4j(ServerThread.class);
     private static Gson gson = new Gson();
+    private static Semaphore smfPet = new Semaphore(1);
+    private static Semaphore smfLedSettings = new Semaphore(1);
+    private static Semaphore smfHopperSettings = new Semaphore(1);
+    private static Semaphore smfFeederSettings = new Semaphore(1);
+    private static Semaphore smfMaxFoodSettings = new Semaphore(1);
 
     /**
      * Constructor
@@ -387,23 +393,35 @@ public class ServerThread extends Thread{
         CLInterface.showAlertInfo(msg);
         logger.setInfo(msg);
 
-        // Step 1. Se procede a la lectura de datos procedentes desde el cliente y se instancia un nuevo objeto Pet
-        var strPet = readMsgFromClient();
-        var pet = gson.fromJson(strPet,Pet.class);
+        // Step 1. Comprobamos si hay algún usuario estableciendo datos para la mascota
+        if(smfPet.tryAcquire()) {
 
-        // Step 2. Se obtiene el código de respuesta procedente de la operación realizada en la DB.
-        responseCode = String.valueOf(petDAO.postPet(pet));
+            // Se procede a la lectura de datos procedentes desde el cliente y se instancia un nuevo objeto Pet
+            var strPet = readMsgFromClient();
+            var pet = gson.fromJson(strPet, Pet.class);
 
-        // Step 3. Manejo de alertas informativas CLI y log del sistema
-        if(responseCode.equals(ResponseCodes.OK.getCode())){
-            logger.setInfo(loggedUser.getEmail() + " actualiza los datos de la mascota en la base de datos correctamente");
-            CLInterface.showAlertAction(loggedUser.getEmail() + " operación realizada correctamente" );
+            // Se obtiene el código de respuesta procedente de la operación realizada en la DB.
+            responseCode = String.valueOf(petDAO.postPet(pet));
+
+            // Manejo de alertas informativas CLI y log del sistema
+            if (responseCode.equals(ResponseCodes.OK.getCode())) {
+                logger.setInfo(loggedUser.getEmail() + " actualiza los datos de la mascota en la base de datos correctamente");
+                CLInterface.showAlertAction(loggedUser.getEmail() + " operación realizada correctamente");
+            } else {
+                logger.setWarning(loggedUser.getEmail() + " no puede actualizar los datos de la mascota. Código respuesta -> " + responseCode);
+                CLInterface.showAlertWarning(loggedUser.getEmail() + " operación NO realizada correctamente");
+            }
+
+            // Liberamos los permisos
+            smfPet.release();
         }else{
-            logger.setWarning(loggedUser.getEmail() + " no puede actualizar los datos de la mascota. Código respuesta -> " + responseCode);
-            CLInterface.showAlertWarning(loggedUser.getEmail() + " operación NO realizada correctamente" );
+            responseCode = ResponseCodes.ERROR_USER_WORKING.getCode();
+            msg = loggedUser.getEmail() + " no puede establecer los datos para la mascota, hay otro usuario trabajando en ello";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
         }
 
-        // Step 3. Se da respuesta al cliente y se establece el estado ocioso
+        // Step 2. Se da respuesta al cliente y se establece el estado ocioso
         sendMsgToClient(responseCode);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }
@@ -647,20 +665,20 @@ public class ServerThread extends Thread{
         var settings = settingsDAO.getSavedSetting();
         var res = ResponseCodes.EMPTY_DATA.getCode();
 
-        // Se genera la informacion CLI y Log. Se establece el JSONstring en la variable de resupuesta, en caso de que
+        // Step 3. Se genera la informacion CLI y Log. Se establece el JSONstring en la variable de resupuesta, en caso de que
         // los parametros de configuración no sean nulos.
-        if(settings != null){
+        if (settings != null) {
             res = gson.toJson(settings, Settings.class);
             msg = "Recupera los parámetros de configuración asociados a DOG-FEEDER";
             CLInterface.showAlertAction(msg);
             logger.setWarning(msg);
-        }else{
+        } else {
             msg = "No se pueden recuperar los parametros de configuración asociados a DOG-FEEDER";
             CLInterface.showAlertWarning(msg);
             logger.setWarning(msg);
         }
 
-        // Step 3. Se realiza el envío de datos al cliente
+        // Step 4. Se realiza el envío de datos al cliente
         sendMsgToClient(res);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }
@@ -679,26 +697,36 @@ public class ServerThread extends Thread{
         CLInterface.showAlertInfo(msg);
         logger.setInfo(msg);
 
-        // Step 2. Se realiza la lectura de los datos asociados a la petición
-        var isOn = Boolean.valueOf(readMsgFromClient());
+        // Step 2. Comprobamos que no existe ningún usuario aplicando alguna configuración
+        if(smfLedSettings.tryAcquire()) {
+            // Se realiza la lectura de los datos asociados a la petición
+            var isOn = Boolean.valueOf(readMsgFromClient());
 
-        // Step 3. Se realiza la operación ternaria sobre el relé encargado de encencer / apagar el microcontrolador
-        if(isOn) {
-            msg = "LEDs encendidos";
-            CLInterface.showAlertAction(msg);
-            logger.setInfo(msg);
-            relay.relayOn(); // ON
+            // Se realiza la operación ternaria sobre el relé encargado de encencer / apagar el microcontrolador
+            if (isOn) {
+                msg = "LEDs encendidos";
+                CLInterface.showAlertAction(msg);
+                logger.setInfo(msg);
+                relay.relayOn(); // ON
+            } else {
+                msg = "LEDs apagados";
+                CLInterface.showAlertAction(msg);
+                logger.setInfo(msg);
+                relay.relayOff(); // OFF
+            }
+
+            // Se establece la configuración en la base de datos y se liberan los recursos
+            responseCode = String.valueOf(settingsDAO.setLedStatus(isOn));
+            smfLedSettings.release();
         }else{
-            msg = "LEDs apagados";
-            CLInterface.showAlertAction(msg);
-            logger.setInfo(msg);
-            relay.relayOff(); // OFF
+            // Respuesta en caso de que otro usuario este cambiando la configuración
+            responseCode = ResponseCodes.ERROR_USER_WORKING.getCode();
+            msg = loggedUser.getEmail() + " no puede establecer la configuración para la iluminación, Hay otro usuario trabajandoen ello";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
         }
 
-        // Step 4. Se establece la configuración en la base de datos
-        responseCode = String.valueOf(settingsDAO.setLedStatus(isOn));
-
-        // Step 5. Se devuelve la respuesta al cliente
+        // Step 3. Se devuelve la respuesta al cliente
         sendMsgToClient(responseCode);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }
@@ -715,17 +743,27 @@ public class ServerThread extends Thread{
         CLInterface.showAlertInfo(msg);
         logger.setInfo(msg);
 
-        // Step 2. Se realiza la lectura de los datos asociados a la petición
-        var isNotifyOn = Boolean.valueOf(readMsgFromClient());
+        // Step 2. Comprobamos que no exista otro usuario aplicando la configuración
+        if(smfHopperSettings.tryAcquire()) {
+            // Se realiza la lectura de los datos asociados a la petición
+            var isNotifyOn = Boolean.valueOf(readMsgFromClient());
 
-        msg = (isNotifyOn ? "Activa" : "Desactiva") + " la notificación de aviso para tolva vacía";
-        CLInterface.showAlertAction(msg);
-        logger.setInfo(msg);
+            msg = (isNotifyOn ? "Activa" : "Desactiva") + " la notificación de aviso para tolva vacía";
+            CLInterface.showAlertAction(msg);
+            logger.setInfo(msg);
 
-        // Step 4. Se establece la configuración en la base de datos
-        responseCode = String.valueOf(settingsDAO.setHopperLowNotify(isNotifyOn));
+            // Se establece la configuración en la base de datos y liberamos recursos
+            responseCode = String.valueOf(settingsDAO.setHopperLowNotify(isNotifyOn));
+            smfHopperSettings.release();
+        }else{
+            // Respuesta en caso de que otro usuario este cambiando la configuración
+            responseCode = ResponseCodes.ERROR_USER_WORKING.getCode();
+            msg = loggedUser.getEmail() + " no puede establecer la configuración para la notificación de la tolva, Hay otro usuario trabajandoen ello";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
+        }
 
-        // Step 5. Se devuelve la respuesta al cliente
+        // Step 3. Se devuelve la respuesta al cliente
         sendMsgToClient(responseCode);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }
@@ -742,17 +780,27 @@ public class ServerThread extends Thread{
         CLInterface.showAlertInfo(msg);
         logger.setInfo(msg);
 
-        // Step 2. Se realiza la lectura de los datos asociados a la petición
-        var isNotifyOn = Boolean.valueOf(readMsgFromClient());
+        // Step 2. Comprobamos que no exista otro usuario aplicando la configuración
+        if(smfFeederSettings.tryAcquire()) {
+            // Se realiza la lectura de los datos asociados a la petición
+            var isNotifyOn = Boolean.valueOf(readMsgFromClient());
 
-        msg = (isNotifyOn ? "Activa" : "Desactiva") + " la notificación de aviso para tolva vacía";
-        CLInterface.showAlertAction(msg);
-        logger.setInfo(msg);
+            msg = (isNotifyOn ? "Activa" : "Desactiva") + " la notificación de aviso para tolva vacía";
+            CLInterface.showAlertAction(msg);
+            logger.setInfo(msg);
 
-        // Step 4. Se establece la configuración en la base de datos
-        responseCode = String.valueOf(settingsDAO.setFeederEmptyNotify(isNotifyOn));
+            // Se establece la configuración en la base de datos
+            responseCode = String.valueOf(settingsDAO.setFeederEmptyNotify(isNotifyOn));
+            smfFeederSettings.release();
+        }else{
+            // Respuesta en caso de que otro usuario este cambiando la configuración
+            responseCode = ResponseCodes.ERROR_USER_WORKING.getCode();
+            msg = loggedUser.getEmail() + " no puede establecer la configuración para la notificación de cuenco sin alimento, Hay otro usuario trabajandoen ello";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
+        }
 
-        // Step 5. Se devuelve la respuesta al cliente
+        // Step 3. Se devuelve la respuesta al cliente
         sendMsgToClient(responseCode);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }
@@ -769,19 +817,31 @@ public class ServerThread extends Thread{
         CLInterface.showAlertInfo(msg);
         logger.setInfo(msg);
 
-        // Step 2. Se realiza la lectura de los datos asociados a la petición
-        var newWeight = Integer.parseInt(readMsgFromClient());
+        // Step 2. Comprobamos que no exista otro usuario aplicando la configuración
+        if(smfMaxFoodSettings.tryAcquire()) {
+            // Se realiza la lectura de los datos asociados a la petición
+            var newWeight = Integer.parseInt(readMsgFromClient());
 
-        // Step 4. Se establece la configuración en la base de datos
-        responseCode = String.valueOf(settingsDAO.setMaxFoodRation(newWeight));
+            // Se establece la configuración en la base de datos
+            responseCode = String.valueOf(settingsDAO.setMaxFoodRation(newWeight));
 
-        // Step 5. CLI y Log
-        msg = (responseCode.equals(ResponseCodes.OK.getCode()) ? "" : "No") +
-                " establece el máximo de alimento a suministrar en " + newWeight;
-        CLInterface.showAlertAction(msg);
-        logger.setInfo(msg);
+            // CLI y Log
+            msg = (responseCode.equals(ResponseCodes.OK.getCode()) ? "" : "No") +
+                    " establece el máximo de alimento a suministrar en " + newWeight;
+            CLInterface.showAlertAction(msg);
+            logger.setInfo(msg);
 
-        // Step 6. Se devuelve la respuesta al cliente
+            // Liberamos recursos
+            smfMaxFoodSettings.release();
+        }else{
+            // Respuesta en caso de que otro usuario este cambiando la configuración
+            responseCode = ResponseCodes.ERROR_USER_WORKING.getCode();
+            msg = loggedUser.getEmail() + " no puede establecer la configuración para el máximo de alimento de corte a suministrar, Hay otro usuario trabajandoen ello";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
+        }
+
+        // Step 3. Se devuelve la respuesta al cliente
         sendMsgToClient(responseCode);
         sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
     }

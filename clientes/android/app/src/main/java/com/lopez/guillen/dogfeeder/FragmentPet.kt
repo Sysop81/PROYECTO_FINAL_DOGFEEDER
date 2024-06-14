@@ -264,7 +264,10 @@ class FragmentPet(val _context: Activity) : Fragment() {
                             session.setSessionPet(null)
                             msg = getString(R.string.info_pet_register_ok)
                             icon = R.drawable.ic_baseline_info
-                        } else {
+                        } else if(statusCode.equals(Session.ServerResponseCodes.USER_WORKING.code)){
+                            msg = getString(R.string.info_error_user_working)
+                            session.setSessionPet(null)
+                        }else {
                             msg = getString(R.string.info_error_pet_register)
                         }
                     }

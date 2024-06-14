@@ -10,7 +10,8 @@ public enum ResponseCodes {
     EMPTY_DATA(2),
     ERROR_SERVO_IN_USE(3),
     ERROR_STUCK_HOPPER(4),
-    ERROR_EMPTY_HOPPER(5);
+    ERROR_EMPTY_HOPPER(5),
+    ERROR_USER_WORKING(6);
 
     private final int CODE;
 

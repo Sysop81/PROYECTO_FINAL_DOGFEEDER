@@ -38,6 +38,7 @@
     <string name="info_ok_setting_post">Configuración aplicada correctamente</string>
     <string name="info_ok_setting_request_report">Informe enviado a su correo electrónico</string>
     <string name="info_error_setting_request_report">No se ha podido completar el envío del informe</string>
+    <string name="info_error_user_working">Hay otro usuario estableciendo la configuración. Espere y refresque la vista</string>
 
     <!-- Dialog -->
     <string name="dialog_info_title">Información</string>

@@ -153,7 +153,9 @@ class FragmentSettings(val _context: Activity) : Fragment() {
             } finally {
                 handler.post {
                     if(!isConError){
-                        if(!response.equals(Session.ServerResponseCodes.ERROR.code)) {
+                        if(response.equals(Session.ServerResponseCodes.USER_WORKING.code)){
+                            msg = getString(R.string.info_error_user_working)
+                        }else if(!response.equals(Session.ServerResponseCodes.ERROR.code)) {
                             msg = getString(R.string.info_ok_setting_post)
                             icon = R.drawable.ic_baseline_info
                         } else msg = getString(R.string.info_error_setting_post)
@@ -191,7 +193,9 @@ class FragmentSettings(val _context: Activity) : Fragment() {
             } finally {
                 handler.post {
                     if(!isConError){
-                        if(!response.equals(Session.ServerResponseCodes.ERROR.code)){
+                        if(response.equals(Session.ServerResponseCodes.USER_WORKING.code)){
+                            msg = getString(R.string.info_error_user_working)
+                        }else if(!response.equals(Session.ServerResponseCodes.ERROR.code)){
                             msg = getString(R.string.info_ok_setting_post)
                             icon = R.drawable.ic_baseline_info
                         } else getString(R.string.info_error_setting_post)
@@ -266,5 +270,4 @@ class FragmentSettings(val _context: Activity) : Fragment() {
         inMaxFoodRation.setSelection( rationList.indexOf(settings.foodRation.toString()))
         loading = false;
     }
-
 }

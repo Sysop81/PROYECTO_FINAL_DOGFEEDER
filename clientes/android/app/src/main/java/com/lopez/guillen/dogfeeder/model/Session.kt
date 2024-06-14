@@ -32,7 +32,8 @@ class Session private constructor(){
         OK("1"),
         EMPTY_DATA("2"),
         WAIT("3"),
-        HOPPER_DANGER("4")
+        HOPPER_DANGER("4"),
+        USER_WORKING("6")
     }
 
     // Códigos de estado para la medición de la tolva de alimento

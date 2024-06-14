@@ -39,6 +39,7 @@
     <string name="info_ok_setting_post">Settings applied successfully</string>
     <string name="info_ok_setting_request_report">Report sent to your email</string>
     <string name="info_error_setting_request_report">Report delivery could not be completed</string>
+    <string name="info_error_user_working">Another user is configuring the settings. Please exit and refresh the view.</string>
 
     <!-- Dialog -->
     <string name="dialog_info_title">Information</string>
