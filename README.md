@@ -8,7 +8,7 @@
 3. [Puesta en Marcha Servicio TCP](#puesta-en-marcha)
     - [Instalación de Raspberry OS](#instalación-de-raspberry-os)
     - [Instalación de MySQL](#instalación-de-mysql)
-    - [Servidor FTP](#servidor-ftp)
+    - [Servidor TCP](#servidor-tcp)
     - [Definición de Variables de Entorno](#definición-de-variables-de-entorno)
 4. [Cliente TCP. Android app](#clienteTCP)    
 5. [Microcontroloador Raspberry PICO](#microcontrolador-raspberry-pico)    
