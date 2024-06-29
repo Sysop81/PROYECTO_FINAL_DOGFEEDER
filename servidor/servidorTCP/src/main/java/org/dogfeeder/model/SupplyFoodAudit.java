@@ -9,6 +9,8 @@ public class SupplyFoodAudit {
     private User user;
     private double weight;
     private String timeStamp;
+    private String time;
+    private String date;
 
     /**
      * Constructor
@@ -27,6 +29,10 @@ public class SupplyFoodAudit {
         this.user = user;
         this.weight = weight;
         this.timeStamp = timeStamp;
+
+        var aTimeStamp = timeStamp.split(" ");
+        this.date = aTimeStamp[0];
+        this.time = aTimeStamp[1];
     }
 
     /**
@@ -85,6 +91,22 @@ public class SupplyFoodAudit {
      */
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    /**
+     * Getter para la propiedad date
+     * @return String con la fecha de la operación de auditoría
+     */
+    public String getDate(){
+        return this.date;
+    }
+
+    /**
+     * Getter para la propiedad time
+     * @return String con la hora de la operación de auditoría
+     */
+    public String getTime(){
+        return this.time;
     }
 
     /**

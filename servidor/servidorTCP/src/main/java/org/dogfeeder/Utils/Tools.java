@@ -6,6 +6,7 @@ import org.dogfeeder.Main;
 import org.dogfeeder.cli.CLInterface;
 import org.dogfeeder.model.Log;
 import org.dogfeeder.model.Logger4j;
+import org.dogfeeder.model.SupplyFoodAudit;
 import org.dogfeeder.model.User;
 import java.io.*;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Tools {
      * Método getRandonCode
      * Este método se encarga de generar un código aleatorio necesario para cuando un usuario realiza operaciones de
      * registro y cambio de contraseña en DOGFEEDER
-     * @return
+     * @return int Código aleatorio generado.
      */
     public static int getRandonCode(){
         StringBuilder num = new StringBuilder();
@@ -45,7 +46,7 @@ public class Tools {
      * Este método se encarga de redondear decimales en base al parámetro numberOfDecimals
      * @param number Número a readondear dedcimales
      * @param numberOfDecimals Número de decimales con los que se desea contar
-     * @return Número con los decimales redondeados.
+     * @return double Número con los decimales redondeados.
      */
     public static double roundToDecimals(double number, int numberOfDecimals) {
         double factor = Math.pow(10, numberOfDecimals);
@@ -127,11 +128,13 @@ public class Tools {
         return listOfLogs;
     }
 
+
     /**
      * Método generateReport
      * Este método se encarga de obtener un reporte con el log del sistema
      * @param logList Listado de items Log para incluir en el reporte
      * @param user Usuario que solicita el reporte
+     * @return Boolean Determina el resultado de la operación.
      */
     public static Boolean generateReport(ArrayList<Log> logList, User user){
         final var REPORT_FILE_PATH = System.getenv("REPORTS_FILE_PATH");

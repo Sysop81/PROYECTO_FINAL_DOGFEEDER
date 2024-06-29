@@ -129,7 +129,7 @@ public class ServoMotor {
         while (hx711module.getNetWeight() < MAX_FOOD) {
             // Se obtiene el peso neto (Si en valor del cuenco)
             var weightSupplyed = hx711module.getNetWeight();
-            System.out.println("[DEBUG] ciclo nuevo -> peso: " + (hx711module.getNetWeight() < 0 ? 0 : hx711module.getNetWeight()));
+            CLInterface.showAlertDebug("Iniciando ciclo número " + counter + " de suministro de alimento.");
             // Se realiza el giro de servoMotor principal para el suministro de alimento
             res = servoMotor.rotate360();
             // Se realiza una nueva lectura del peso total registrado (Cuenco + alimento suministrado)
@@ -146,12 +146,14 @@ public class ServoMotor {
             // es posible que el servoMotor se encuentre atascado o no quede alimento entre la tolva y tornillo para ser
             // extraido. Poer ello es necesario finalizar la rotación del servoMotor.
             if (weightDif >= 0 & weightDif <= 15 & counter > 0) {
-                System.out.println("[DEBUG] -> " + ultraSonic.isLowFoodLevel());
+                CLInterface.showAlertDebug("Tolva en estado crítico -> " + (ultraSonic.isLowFoodLevel() ? "Sí":"No"));
+
                 // Establecemos el código de respuesta en función de si la medición de la tolva se encuentra en nivel bajo,
                 // si esta se encuentra en un nivel optimo, es 99% seguro que el servoMotor se encuentra atascado
                 responseCode = ultraSonic.isLowFoodLevel() ? ResponseCodes.ERROR_STUCK_HOPPER.getCode() :
                         ResponseCodes.ERROR_EMPTY_HOPPER.getCode();
-                System.out.println("[DEBUG] Código respuesta -> " + responseCode);
+                CLInterface.showAlertDebug("Código respuesta -> " + responseCode);
+
                 break;
             } else {
                 // Actualizamos el sumatorio de peso
@@ -161,7 +163,7 @@ public class ServoMotor {
         }
 
         // Detenemos el servoMotor. Liberación de recursos GPIO
-        System.out.println("[DEBUG] Parando giro 360. " + "suministrado : " + hx711module.getNetWeight());
+        CLInterface.showAlertDebug("Finalizando Servomotor 360. " + "suministrado : " + hx711module.getNetWeight() + " == " + suppliedFoodSum);
         servoMotor.stopRotate();
 
         // Se avalua que los códigos de respuesta no sean por atasco o tolva nivel crítico

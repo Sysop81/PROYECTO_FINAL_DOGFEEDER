@@ -21,6 +21,7 @@ public enum ServerStateCodes {
     FEEDEREMPTY(12),
     MAXFOODRATION(13),
     REPORT(14),
+    RESET(15),
     IDLE_STATE(20);
 
     private final int STATUS_CODE;

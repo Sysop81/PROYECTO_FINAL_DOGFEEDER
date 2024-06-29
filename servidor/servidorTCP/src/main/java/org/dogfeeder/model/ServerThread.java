@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.pi4j.io.gpio.RaspiPin;
+import org.dogfeeder.Main;
 import org.dogfeeder.Utils.Tools;
 import org.dogfeeder.cli.CLInterface;
 import org.dogfeeder.crypto.Hasher;
@@ -145,6 +146,10 @@ public class ServerThread extends Thread{
                     case 14:
                         // Get DOGFEEDER report
                         getDogFeederReport();
+                        break;
+                    case 15:
+                        // Reset DOGFEEDER
+                        resetDogFeeder();
                         break;
                 }
             }
@@ -532,12 +537,11 @@ public class ServerThread extends Thread{
             // Generación Array JSON de salida
             JsonArray jsonArray = new JsonArray();
             for(SupplyFoodAudit item : listOfAuditSupplyFood){
-                var aStrDateTime = item.getTimeStamp().split(" ");
                 JsonObject jsonOb = new JsonObject();
                 jsonOb.addProperty("ID",item.getID());
                 jsonOb.addProperty("user",item.getUser().getEmail());
-                jsonOb.addProperty("date",aStrDateTime[0]);
-                jsonOb.addProperty("time",aStrDateTime[1]);
+                jsonOb.addProperty("date",item.getDate());
+                jsonOb.addProperty("time",item.getTime());
                 jsonOb.addProperty("weight",item.getWeight());
                 jsonArray.add(jsonOb);
             }
@@ -575,12 +579,11 @@ public class ServerThread extends Thread{
         msg = loggedUser.getEmail() + " procesa y envía el útimo registro de alimento suministrado";
 
         if(lastSfa != null){
-            var aStrDateTime = lastSfa.getTimeStamp().split(" ");
             JsonObject jsonOb = new JsonObject();
             jsonOb.addProperty("ID",lastSfa.getID());
             jsonOb.addProperty("user",lastSfa.getUser().getEmail());
-            jsonOb.addProperty("date",aStrDateTime[0]);
-            jsonOb.addProperty("time",aStrDateTime[1]);
+            jsonOb.addProperty("date", lastSfa.getDate());
+            jsonOb.addProperty("time", lastSfa.getTime());
             jsonOb.addProperty("weight",lastSfa.getWeight());
             jsonOb.addProperty("hopperStatus",ultraSonic.getFoodLevel());
 
@@ -895,6 +898,55 @@ public class ServerThread extends Thread{
         }
         // Step 4. Se realiza el envío del código de respuesta
         sendMsgToClient(responseCode);
+    }
+
+
+    /**
+     * Método resetDogFeeder
+     * Se encarga de reiniciar DOGFEEDER de forma remota.
+     */
+    private void resetDogFeeder(){
+        // Step 1. Se muestra información por el CLI del servidor DOGFEEDER y se define un código de estado por defecto.
+        msg = loggedUser.getEmail() + " inicia acción para resetear DOGFEEDER";
+        CLInterface.showAlertWarning(msg);
+        logger.setWarning(msg);
+        responseCode = ResponseCodes.OK.getCode();
+
+        // Step 2. Se evalua si la compuerta de la tolva está abierta
+        if (Main.getTrayStatus()){
+            var msg = loggedUser.getEmail() + " cierra la tapadera de la tolva [Operación de RESET]";
+            CLInterface.showAlertInfo(msg);
+            logger.setInfo(msg);
+            ServoMotor.startGatePythonScript(2.5);
+        }
+
+        // Step 3. Si el servo 360 está en uso, finalizamos su ejecución
+        if(servomotor.isBussy()){
+            msg = loggedUser.getEmail() + " interrumpe el suministro de alimento [Operación de RESET]";
+            CLInterface.showAlertInfo(msg);
+            logger.setInfo(msg);
+            servomotor.stopRotate();
+        }
+
+        // Step 4. Ejecutamos la orden para iniciar el reboot del sistema
+        final String COMMAND = "sudo reboot";
+
+        try{
+            msg = loggedUser.getEmail() + "Reiniciando el servicio DOGFEEDER";
+            CLInterface.showAlertWarning(msg);
+            logger.setWarning(msg);
+            Runtime.getRuntime().exec(COMMAND);
+        } catch (Exception ioe) {
+            var msg = "Error al reiniciar el sistema. " + ioe.getMessage();
+            CLInterface.showAlertDanger(msg);
+            logger.setError(msg);
+            responseCode = ResponseCodes.ERROR.getCode();
+        }finally {
+            try {
+                sendMsgToClient(responseCode);
+                sStatus = ServerStateCodes.IDLE_STATE.getStatusCode();
+            } catch (IOException e) {}
+        }
     }
 
 

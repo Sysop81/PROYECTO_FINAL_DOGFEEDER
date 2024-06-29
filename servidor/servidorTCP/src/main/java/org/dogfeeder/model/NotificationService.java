@@ -25,7 +25,7 @@ public class NotificationService extends Thread{
     private static final int VACCINE_NOTIFY_INIT_HOUR = 10;  // PRODUCTION -> 8:00:0
     private static final int VACCINE_NOTIFY_FINISH_HOUR= 22; // PRODUCTION -> 10:00:0
     private static final Long WAIT_INIT = 10000L;
-    private static final long WAIT_TIME  = 10000; // 10s DEBUG TIME // PRODUCTION TIME 1h -> 3600000
+    private static final long WAIT_TIME  = 3600000; // 30000 30s DEBUG TIME // PRODUCTION TIME 1h -> 3600000
     private static final double FOOD_WEIGHT = 20.0;
     private static Logger4j logger = new Logger4j(NotificationService.class);
 

@@ -201,4 +201,13 @@ public class Main {
             }
         }
     }
+
+    /**
+     * Método getTrayStatus
+     * Método encargado de determinar si la tapadera de la tolva se encuentra abierta o cerrada.
+     * @return boolean con el resultado de la operación
+     */
+    public static boolean getTrayStatus(){
+        return isTrayOpen;
+    }
 }
