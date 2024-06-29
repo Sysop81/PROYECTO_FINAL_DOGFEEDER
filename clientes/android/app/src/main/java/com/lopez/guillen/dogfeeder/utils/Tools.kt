@@ -5,13 +5,18 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.os.Build
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Patterns
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.lopez.guillen.dogfeeder.MainActivity
 import com.lopez.guillen.dogfeeder.model.AuditFoodItem
@@ -57,6 +62,49 @@ class Tools {
             //         show.
             val aDialog = alert.create()
             aDialog.show()
+        }
+
+        /**
+         * Método showQuestionDialog. TODO PROVISIONAL
+         * Este método se encarga de mostrar información al usuario con la finalidad de que este tome una decisión sobre la
+         * acción que pretende realizar.
+         * @param context Contexto del activity
+         * @param msg Cadena de caracteres que contiene la información a mostrar
+         * @param icon icono a mostrar junto al mensaje
+         * @param onAccept lambda encargada de ejecutarse el la llamada ante la respuesta positiva.
+         */
+        fun showQuestionDialog(context: Context, msg: String, icon: Int? = null,onAccept: () -> Unit){
+            // Step 1. Se construye el objeto cosntructor
+            val alert = AlertDialog.Builder(context)
+            alert.setTitle(com.lopez.guillen.dogfeeder.R.string.dialog_info_title)
+
+            // Step 2. Se establece el botón de cierre y la función lambda encargada de manejar la acción de cierre mediante
+            //         el método dismiss.
+            alert.setMessage(msg)
+                .setNegativeButton(com.lopez.guillen.dogfeeder.R.string.dialog_cancel){alertDialog, _ ->
+                    alertDialog.dismiss()
+                }
+                .setPositiveButton(com.lopez.guillen.dogfeeder.R.string.dialog_ok){alertDialog, _ ->
+                    onAccept()
+                    alertDialog.dismiss()
+                }
+
+            // Step 3. Se establece el ícono si se ha proporcionado uno
+            icon?.let {
+                alert.setIcon(it)
+            }
+
+            // Step 4. Se crea el objeto mediante el metodo create del constructor y se muestra al usuario mediante el metodo
+            //         show.
+            val aDialog = alert.create()
+            aDialog.show()
+
+            // Step 5. Modificamos el botón de cancelación
+            aDialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.let { button ->
+                button.setTextColor(ContextCompat.getColor(context, com.lopez.guillen.dogfeeder.R.color.turquoise))
+                button.typeface = Typeface.DEFAULT_BOLD
+            }
+
         }
 
 

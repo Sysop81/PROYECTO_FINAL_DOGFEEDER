@@ -23,7 +23,7 @@ class Session private constructor(){
     // Códigos de estado [END POINTS de la máquina de estados]
     enum class ServerStates {
         CLOSE,LOGIN,REGISTER,RECOVERYPASS,FOOD,AUDITS,LASTAUDIT,GRAPHAUDITS,PETDATA,POSTPET,SETTINGSDATA,LED,REPORT,
-        MAXFOODRATION,HOPPERLOW,FEEDEREMPTY
+        MAXFOODRATION,HOPPERLOW,FEEDEREMPTY,RESET
     }
 
     // Códigos de respuesta a las peticiones
@@ -139,5 +139,20 @@ class Session private constructor(){
         val data = DataInputStream(inStream)
         val response = data.readUTF();
         return response
+    }
+
+    /**
+     * Método manageRequest TODO CHECKING
+     * Método encargado de devolver de forma directa la respuesta del servidor.
+     * @param msg Cadena a enviar al servidor TCP
+     * @param op ENDPOINT de la máquina de estados del servidor TCP
+     * @return String cadena que representa la respuesta del servidor a una Request
+     */
+    fun manageRequest(msg : String?, op : ServerStates?) : String{
+        // Step 1. Realizamos el envío de datos al servidor
+        sendRequestToServer(msg, op)
+
+        // Step 3. Obtenemos la respuesta del servidor
+        return readResponseFromServer()
     }
 }

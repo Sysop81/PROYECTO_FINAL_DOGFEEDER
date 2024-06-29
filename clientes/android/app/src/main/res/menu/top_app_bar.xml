@@ -14,8 +14,11 @@
           app:showAsAction="always">
         <menu>
             <item android:id="@+id/opCloseSession"
-                android:title="@string/closeSession"/>
-
+                  android:icon="@drawable/ic_baseline_logout"
+                  android:title="@string/closeSession"/>
+            <item android:id="@+id/opRebootPi"
+                  android:icon="@drawable/ic_baseline_restart"
+                  android:title="@string/reboot_pi"/>
         </menu>
     </item>
 </menu>

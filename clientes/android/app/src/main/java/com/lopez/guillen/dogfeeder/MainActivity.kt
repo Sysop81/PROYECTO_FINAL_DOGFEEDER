@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
  */
 class MainActivity : AppCompatActivity() {
     // Propiedades de clase
+    private lateinit var session: Session
     private lateinit var swipeRefresh : SwipeRefreshLayout
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
@@ -221,35 +222,63 @@ class MainActivity : AppCompatActivity() {
      * @return Boolean
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        session = Session.getInstance()
+        val handler = Handler(Looper.getMainLooper())
+        var statusCode = Session.ServerResponseCodes.ERROR.code
+        var icon = R.drawable.ic_baseline_error
+
         when(item.itemId){
             R.id.opCloseSession->{
                 // ***** Cerramos sesion
 
-                // Step 1. Se obtiene una instancia del singletone y se define el manejador para el post de la corrutina
-                val session = Session.getInstance()
-                val handler = Handler(Looper.getMainLooper())
-                var statusCode = Session.ServerResponseCodes.ERROR.code
-                lifecycleScope.launch(Dispatchers.IO) {
+                Tools.showQuestionDialog(this@MainActivity,getString(R.string.close_session_question),R.drawable.ic_baseline_info){
+                    lifecycleScope.launch(Dispatchers.IO) {
 
-                    // Step 2. Realizamos el envío de datos al servidor
-                    session.sendRequestToServer(null, Session.ServerStates.CLOSE)
+                        // Step 2. Realizamos el envío de datos al servidor
+                        session.sendRequestToServer(null, Session.ServerStates.CLOSE)
 
-                    // Step 3. Obtenemos la respuesta del servidor
-                    statusCode = session.readResponseFromServer()
+                        // Step 3. Obtenemos la respuesta del servidor
+                        statusCode = session.readResponseFromServer()
 
-                    // Step 4. Manejamos la información obtenida del servidor y operamos en consecuencia, mostrando un
-                    //         cuadro de diálogo en caso de error o bien limpiando la sesión y volviendo a la vista de
-                    //         LOGIN
-                    handler.post{
-                        if(statusCode.equals(Session.ServerResponseCodes.OK.code)){
-                            session.close()
-                            Tools.cleanSharedPreferences(sharedPreferences)
-                            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                        }else{
-                            Tools.showAlertDialog(this@MainActivity,getString(R.string.info_error_logout),R.drawable.ic_baseline_error)
+                        // Step 4. Manejamos la información obtenida del servidor y operamos en consecuencia, mostrando un
+                        //         cuadro de diálogo en caso de error o bien limpiando la sesión y volviendo a la vista de
+                        //         LOGIN
+                        handler.post{
+                            if(statusCode.equals(Session.ServerResponseCodes.OK.code)){
+                                session.close()
+                                Tools.cleanSharedPreferences(sharedPreferences)
+                                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                            }else{
+                                Tools.showAlertDialog(this@MainActivity,getString(R.string.info_error_logout),icon)
+                            }
                         }
                     }
                 }
+
+                return true
+            }
+            R.id.opRebootPi ->{
+                // ***** Resetear DOGFEEDER
+                Tools.showQuestionDialog(this@MainActivity,getString(R.string.reset_dogfeeder_question),R.drawable.ic_baseline_info) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        // Step 1. Manejamos la Request & response del servicio DOGFEEDER
+                        statusCode = session.manageRequest(null, Session.ServerStates.RESET)
+
+                        // Step 4. Manejamos la información obtenida del servidor y operamos en consecuencia, mostrando un
+                        //         cuadro de diálogo en base a la respuesta recibida.
+                        handler.post {
+                            var msg = getString(R.string.info_error_reset_op)
+                            if (statusCode.equals(Session.ServerResponseCodes.OK.code)) {
+                                icon = R.drawable.ic_baseline_info
+                                msg = getString(R.string.info_ok_reset_op)
+                            }
+
+                            Tools.showAlertDialog(this@MainActivity, msg, icon)
+                        }
+                    }
+                }
+
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

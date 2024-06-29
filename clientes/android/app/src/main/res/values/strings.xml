@@ -39,11 +39,19 @@
     <string name="info_ok_setting_request_report">Informe enviado a su correo electrónico</string>
     <string name="info_error_setting_request_report">No se ha podido completar el envío del informe</string>
     <string name="info_error_user_working">Hay otro usuario estableciendo la configuración. Espere y refresque la vista</string>
+    <string name="info_error_reset_op">No se puede realizar la operación de reseteo de DOGFEEDER</string>
+    <string name="info_ok_reset_op">DOGFEEDER se está reiniciando, se recomienda cerrar la aplicación durante unos minutos</string>
+
+    <!-- Msg Questions -->
+    <string name="close_session_question">¿Desea cerrar sesión?</string>
+    <string name="reset_dogfeeder_question">¿Desea reiniciar el servicio DOGFEEDER?</string>
 
     <!-- Dialog -->
     <string name="dialog_info_title">Información</string>
     <string name="dialog_error_title">Error</string>
     <string name="dialog_close">Cerrar</string>
+    <string name="dialog_ok">Aceptar</string>
+    <string name="dialog_cancel">Cancelar</string>
 
 
     <!-- Login view -->
@@ -132,6 +140,7 @@
     <string name="menu_baseline_settings">Configuración</string>
     <string name="navigation_drawer_open">Abierto</string>
     <string name="navigation_drawer_close">Cerrado</string>
+    <string name="reboot_pi">Resetear DOGFEEDER</string>
 
     <!-- Form inputs -->
     <string name="spinner_pet_size_small">Raza pequeña</string>
