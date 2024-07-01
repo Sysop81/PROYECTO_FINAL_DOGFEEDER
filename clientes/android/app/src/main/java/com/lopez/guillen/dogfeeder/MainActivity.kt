@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity() {
             R.id.opCloseSession->{
                 // ***** Cerramos sesion
 
-                Tools.showQuestionDialog(this@MainActivity,getString(R.string.close_session_question),R.drawable.ic_baseline_info){
+                Tools.showAlertDialog(this@MainActivity,getString(R.string.close_session_question),R.drawable.ic_baseline_info){
                     lifecycleScope.launch(Dispatchers.IO) {
 
                         // Step 2. Realizamos el envío de datos al servidor
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.opRebootPi ->{
                 // ***** Resetear DOGFEEDER
-                Tools.showQuestionDialog(this@MainActivity,getString(R.string.reset_dogfeeder_question),R.drawable.ic_baseline_info) {
+                Tools.showAlertDialog(this@MainActivity,getString(R.string.reset_dogfeeder_question),R.drawable.ic_baseline_info) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         // Step 1. Manejamos la Request & response del servicio DOGFEEDER
                         statusCode = session.manageRequest(null, Session.ServerStates.RESET)

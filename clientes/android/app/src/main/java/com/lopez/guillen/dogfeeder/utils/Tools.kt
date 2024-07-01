@@ -12,8 +12,12 @@ import android.os.Build
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -40,72 +44,60 @@ class Tools {
          * @param context Contexto del activity
          * @param msg Cadena de caracteres que contiene la información a mostrar
          * @param icon icono a mostrar junto al mensaje
+         * @param onAccept lambda para manejar la aceptación de la acción a realizar.
          */
-        fun showAlertDialog(context: Context, msg: String, icon: Int? = null){
-            // Step 1. Se construye el objeto cosntructor
+        fun showAlertDialog(context: Context, msg: String, icon: Int? = null,onAccept: (() -> Unit)? = null){
+
+            // Step 0. Inflater view
+            val inflater = LayoutInflater.from(context)
+
+            // Step 1. Se construye el objeto cosntructor para el alertDialog y se añadde el layout para la vista
             val alert = AlertDialog.Builder(context)
-            alert.setTitle(com.lopez.guillen.dogfeeder.R.string.dialog_info_title)
+            val dialogView = inflater.inflate(com.lopez.guillen.dogfeeder.R.layout.alert_dialog,null)
+            alert.setView(dialogView)
 
 
-            // Step 2. Se establece el botón de cierre y la función lambda encargada de manejar la acción de cierre mediante
-            //         el método dismiss.
-            alert.setMessage(msg).setPositiveButton(com.lopez.guillen.dogfeeder.R.string.dialog_close){alertDialog, _ ->
+            // Step 2. Se establece el mensaje para el título y texto del cuadro de diálogo
+            dialogView.findViewById<TextView>(com.lopez.guillen.dogfeeder.R.id.txtDialogTitle)
+                .setText(com.lopez.guillen.dogfeeder.R.string.dialog_info_title)
+            dialogView.findViewById<TextView>(com.lopez.guillen.dogfeeder.R.id.txtDialogMsg).setText(msg)
+
+            var btnNegativeText = com.lopez.guillen.dogfeeder.R.string.dialog_close
+            onAccept?.let {
+                    btnNegativeText = com.lopez.guillen.dogfeeder.R.string.dialog_cancel
+                    alert.setPositiveButton(com.lopez.guillen.dogfeeder.R.string.dialog_ok){alertDialog, _ ->
+                        onAccept()
+                        alertDialog.dismiss()
+                    }
+            }
+
+            // Step 3. Se establecen los manejadores de eventos para los botones de cancelación y aceptación
+            alert.setNegativeButton(btnNegativeText){alertDialog, _ ->
                 alertDialog.dismiss()
             }
 
-            // Step 3. Se establece el ícono si se ha proporcionado uno
+
+            // Step 4. Se establece el ícono si se ha proporcionado uno
             icon?.let {
-                alert.setIcon(it)
+                dialogView.findViewById<ImageView>(com.lopez.guillen.dogfeeder.R.id.imgDialog).setImageResource(icon)
             }
 
-            // Step 4. Se crea el objeto mediante el metodo create del constructor y se muestra al usuario mediante el metodo
-            //         show.
-            val aDialog = alert.create()
-            aDialog.show()
-        }
-
-        /**
-         * Método showQuestionDialog. TODO PROVISIONAL
-         * Este método se encarga de mostrar información al usuario con la finalidad de que este tome una decisión sobre la
-         * acción que pretende realizar.
-         * @param context Contexto del activity
-         * @param msg Cadena de caracteres que contiene la información a mostrar
-         * @param icon icono a mostrar junto al mensaje
-         * @param onAccept lambda encargada de ejecutarse el la llamada ante la respuesta positiva.
-         */
-        fun showQuestionDialog(context: Context, msg: String, icon: Int? = null,onAccept: () -> Unit){
-            // Step 1. Se construye el objeto cosntructor
-            val alert = AlertDialog.Builder(context)
-            alert.setTitle(com.lopez.guillen.dogfeeder.R.string.dialog_info_title)
-
-            // Step 2. Se establece el botón de cierre y la función lambda encargada de manejar la acción de cierre mediante
-            //         el método dismiss.
-            alert.setMessage(msg)
-                .setNegativeButton(com.lopez.guillen.dogfeeder.R.string.dialog_cancel){alertDialog, _ ->
-                    alertDialog.dismiss()
-                }
-                .setPositiveButton(com.lopez.guillen.dogfeeder.R.string.dialog_ok){alertDialog, _ ->
-                    onAccept()
-                    alertDialog.dismiss()
-                }
-
-            // Step 3. Se establece el ícono si se ha proporcionado uno
-            icon?.let {
-                alert.setIcon(it)
-            }
-
-            // Step 4. Se crea el objeto mediante el metodo create del constructor y se muestra al usuario mediante el metodo
+            // Step 5. Se crea el objeto mediante el metodo create del constructor y se muestra al usuario mediante el metodo
             //         show.
             val aDialog = alert.create()
             aDialog.show()
 
-            // Step 5. Modificamos el botón de cancelación
+            // Step 6. Modificamos el aspecto de los botones predefinidos para cancelar y aceptar
             aDialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.let { button ->
-                button.setTextColor(ContextCompat.getColor(context, com.lopez.guillen.dogfeeder.R.color.turquoise))
+                button.setTextColor(Color.RED)
                 button.typeface = Typeface.DEFAULT_BOLD
             }
 
+            aDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.let { button ->
+                button.setTextColor(ContextCompat.getColor(context, com.lopez.guillen.dogfeeder.R.color.turquoise))
+            }
         }
+
 
 
         /*************************************** VALIDADORES **********************************************************/

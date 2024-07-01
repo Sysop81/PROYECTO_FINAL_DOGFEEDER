@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="50dp">
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="34dp"
+                app:srcCompat="@drawable/ic_baseline_error"
+                android:id="@+id/imgDialog"
+                android:layout_gravity="center"
+                app:layout_constraintHorizontal_bias="0.831"/>
+        <TextView
+                android:text="TextView"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/txtDialogTitle"
+        />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <View   android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/turquoise"
+                android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:padding="5dp">
+        <TextView
+                android:text="TextView"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/txtDialogMsg"/>
+    </LinearLayout>
+</LinearLayout>
